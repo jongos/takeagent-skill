@@ -1,5 +1,7 @@
 # Issue Review — November 16, 2026
 
+> Historical snapshot: the publication and live-page observations below describe v0.1.3 at the time of that release, not the current deployment. See [current validation and issue dispositions](maintenance-review-2026-11-16.md) and [VERSION](../VERSION).
+
 Reviewed issues 1–15 against v0.1.2, then implemented the following v0.1.3 changes. Issue comments link the relevant commits and CI evidence after publication.
 
 | Issue | Disposition |

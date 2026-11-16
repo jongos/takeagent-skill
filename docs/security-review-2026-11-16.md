@@ -1,5 +1,7 @@
 # Skill Review and Hardening — November 16, 2026
 
+> Historical snapshot: this review and its publication checks describe v0.1.2, not the current release. Test counts, hashes and live-page observations below are retained as dated evidence. See [current validation and issue dispositions](maintenance-review-2026-11-16.md) and [VERSION](../VERSION) for the current source baseline.
+
 Scope: public skill instructions, installation guidance, release packaging and the static download page. No private backend or production authentication changes. This is a source review with packaging regression tests, not an independent penetration test or proof of behavior in every AI host.
 
 ## Findings and Fixes

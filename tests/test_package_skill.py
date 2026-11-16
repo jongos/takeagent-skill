@@ -31,6 +31,22 @@ class PackageTests(unittest.TestCase):
         self.assertEqual(hashlib.sha256(archive.read_bytes()).hexdigest(), digest)
         self.assertEqual(archive.with_suffix(".zip.sha256").read_text(), digest + "  takeagent-skill.zip\n")
 
+    def test_atomic_write_failure_preserves_previous_file_and_cleans_temp(self):
+        target = self.root / "artifact"
+        target.write_bytes(b"previous")
+        with patch.object(package.os, "replace", side_effect=OSError("synthetic replace failure")):
+            with self.assertRaisesRegex(OSError, "synthetic replace failure"):
+                package.atomic_write(self.root, target, b"replacement")
+        self.assertEqual(target.read_bytes(), b"previous")
+        self.assertEqual(list(self.root.glob(".skill-*")), [])
+
+    def test_atomic_write_replaces_complete_file_and_cleans_temp(self):
+        target = self.root / "artifact"
+        target.write_bytes(b"previous")
+        package.atomic_write(self.root, target, b"replacement")
+        self.assertEqual(target.read_bytes(), b"replacement")
+        self.assertEqual(list(self.root.glob(".skill-*")), [])
+
     def test_line_endings_do_not_change_release(self):
         archive, digest = package.build(self.root)
         first = archive.read_bytes()
