@@ -79,3 +79,7 @@ Aligned the portable instructions with TakeAgent's current answer-first editoria
 Audited all ten existing release assets (five ZIPs and receipts), all reachable public Git history, and current tracked files with checksum-verified Gitleaks 8.30.1. No detected secrets. A separate in-memory comparison against locally configured credential values found no public matches; no values or environment files were copied into the repository. Added a checksum-pinned CI scanner for full Git history and the expanded package. The audit does not claim exhaustive detection of every possible secret.
 
 Validation: 21 local regression tests passed, with three Windows symlink-privilege skips; skill validation, version-link check and packaging passed. v0.1.5 ZIP SHA-256: 87d47eaa8464e9cb0ea38e1c6f0c3d7eb45a35a47f47a6e4f27ddb52d0e89d41. Linux CI, publication and downloaded-asset comparison follow this commit. No private app source or service behavior was changed.
+
+## 2026-11-16 — Record privacy release verification
+
+Published v0.1.5 from bfcf3b3. Push CI 43893988586 passed all 24 tests without skips and found no secrets in Git history or the expanded package. Release CI 43894058918 also passed its uploaded-assets versus tagged-source comparison. Independent download verification matched SHA-256 87d47eaa8464e9cb0ea38e1c6f0c3d7eb45a35a47f47a6e4f27ddb52d0e89d41. Verified that the live landing page links to v0.1.5. Host-specific response behavior remains an acceptance task, not a result of these package checks.
