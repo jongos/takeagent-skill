@@ -30,6 +30,9 @@ Status: public instruction package. No production service changes are included. 
 22. Lost/compacted history without reliable reminder state: suppress unsolicited prompts and recheck account access before account work.
 23. Browser assistance: require a user-requested task, inspect only necessary TakeAgent page regions, and summarize rather than copy raw page data.
 
+24. General educational question: inspect available host connection metadata without a service call; do not fetch setup/browser guides unnecessarily.
+25. Explanatory follow-up on unchanged inputs and connection: reuse the prior result without relisting/reviewing; label freshness honestly and refresh when requested or when inputs/account state change.
+
 Run OAuth acceptance separately in each named client: consent with intended identity, discovery, account.access, synthetic finance.review, owner isolation, refresh, revoke and denied subsequent call. Record date, client/version and outcomes without tokens or customer content.
 
 ## Gaps requiring service work
