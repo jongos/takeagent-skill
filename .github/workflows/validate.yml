@@ -1,0 +1,22 @@
+name: Validate skill package
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Run packaging regression tests
+        run: python3 -m unittest discover -s tests -v
+      - name: Build and verify the skill archive
+        run: |
+          python3 scripts/package_skill.py
+          cd dist
+          sha256sum --check takeagent-skill.zip.sha256

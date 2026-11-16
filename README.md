@@ -8,7 +8,7 @@ The skill checks the connected account and reminds signed-out users to log in, o
 
 ## Install
 
-**[Download takeagent-skill.zip](https://github.com/jongos/takeagent-skill/releases/download/v0.1.1/takeagent-skill.zip)** · [Release notes and checksum](https://github.com/jongos/takeagent-skill/releases/tag/v0.1.1) · **[Visit the landing page](https://jongos.github.io/takeagent-skill/)**
+**[Download takeagent-skill.zip](https://github.com/jongos/takeagent-skill/releases/download/v0.1.2/takeagent-skill.zip)** · [Release notes and checksum](https://github.com/jongos/takeagent-skill/releases/tag/v0.1.2) · **[Visit the landing page](https://jongos.github.io/takeagent-skill/)**
 
 Upload the ZIP where skills are supported, or use the folder at skills/takeagent-skill. See [platform setup](skills/takeagent-skill/references/setup.md) for Claude, ChatGPT, Gemini and Grok.
 
@@ -39,9 +39,12 @@ Film-finance education, account checks, project discovery, budget/funding review
 Requires Python 3.10+; no third-party dependencies.
 
 ```sh
+python -m unittest discover -s tests -v
 python scripts/package_skill.py
 ```
 
-Produces dist/takeagent-skill.zip and its SHA-256 receipt from an explicit file allowlist. It never packages the private app, local credentials or Git history. Review the [acceptance checklist](docs/acceptance.md) before labeling a release production-verified.
+Produces dist/takeagent-skill.zip and its SHA-256 receipt from one bounded, validated snapshot and an explicit file allowlist. Inputs use normalized line endings for reproducible builds. Packaging rejects linked/reparse paths, escaping or unshipped local references, and unsafe Markdown link schemes. Validate in a trusted checkout; the builder is not a sandbox against concurrent hostile filesystem changes. A checksum is an integrity check, not a publisher signature. It never packages the private app, local credentials or Git history. Review the [acceptance checklist](docs/acceptance.md) before labeling a release production-verified.
 
 The repository has no service credentials, copied underwriting corpus, customer data or private application source. Its distribution license covers these instruction/package files only; TakeAgent service access remains governed by account permissions.
+
+See the [hardening review](docs/security-review-2026-11-16.md) for fixed findings, test evidence and remaining platform-acceptance limits.
