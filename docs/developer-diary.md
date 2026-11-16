@@ -19,3 +19,9 @@ Added direct versioned ZIP, release and landing-page links to the README. Built 
 Validation: the package rebuilt with the same SHA-256 and passed archive/reference checks. Edge rendered desktop and mobile screenshots, inspected for hierarchy and clipping. No horizontal overflow at 1440, 390 or 320 pixels; both fonts loaded. Platform switching, arrow-key navigation and FAQ expansion passed. The heading audit passed all nine headings. Clipboard behavior and hosted links will be checked after publication. Full accessibility certification and named-client OAuth acceptance are not claimed.
 
 Publication is authorized; GitHub release creation and Pages deployment follow this source commit. No private application changes are included.
+
+## 2026-11-16 — Record release and Pages verification
+
+Published v0.1.0 from source commit 712bd563d78daaea43f4e5c61a3d124d7fa4c242 with the installable ZIP and SHA-256 receipt. A fresh download matched 6d7dbec84cdfb5cab34beebcdf64b7b23d11f48e25aac49497bbcc995861c200. Enabled public GitHub Pages from main /docs and set the repository homepage.
+
+Live verification: the landing page returned HTTP 200; both self-hosted fonts loaded. Platform switching and clipboard copying of the exact MCP URL passed in Edge. Desktop/mobile captures were produced; local renders were visually inspected. Earlier 320/390/1440 overflow, keyboard tab navigation, FAQ and nine-heading checks passed. This documentation-only entry records completed publication; named-client TakeAgent OAuth acceptance remains open.
