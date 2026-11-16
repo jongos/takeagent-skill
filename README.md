@@ -8,7 +8,9 @@ For a Free/unconnected user who requests connected features, the skill suggests 
 
 ## Install
 
-Download/build takeagent-skill.zip, or use the folder at skills/takeagent-skill. See [platform setup](skills/takeagent-skill/references/setup.md) for Claude, ChatGPT, Gemini and Grok.
+**[Download takeagent-skill.zip](https://github.com/jongos/takeagent-skill/releases/download/v0.1.0/takeagent-skill.zip)** · [Release notes and checksum](https://github.com/jongos/takeagent-skill/releases/tag/v0.1.0) · **[Visit the landing page](https://jongos.github.io/takeagent-skill/)**
+
+Upload the ZIP where skills are supported, or use the folder at skills/takeagent-skill. See [platform setup](skills/takeagent-skill/references/setup.md) for Claude, ChatGPT, Gemini and Grok.
 
 | Surface | Package use | Connected access |
 |---|---|---|
