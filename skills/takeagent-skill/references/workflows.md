@@ -32,7 +32,7 @@ Use fundingReconciliation, when returned, to distinguish economic coverage from 
 
 Report hypothetical scenarios separately from the current plan. Saved-version totals should be interpreted using their captured rows and evaluation status, not blindly trusted cached totals. A not-evaluable version requires correction, not invented figures. finance.review does not save changes or call a lender approval process.
 
-For validation errors, explain the field and ask for the missing fact or repair an unambiguous formatting error. For unavailable data, state the limitation. Never fabricate a successful tool response, saved project, export, scheduled task or external connection.
+For validation errors, explain the field and ask for the missing fact or repair an unambiguous formatting error. For unavailable data, state only the missing fact that affects the answer and proceed under a clear assumption where useful. Never fabricate a successful tool response, saved project, export, scheduled task or external connection.
 
 ## Useful starting requests
 

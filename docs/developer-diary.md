@@ -71,3 +71,11 @@ Validation: 21 local regression tests passed with three Windows symlink-privileg
 ## 2026-11-16 — Record optimization release verification
 
 Published v0.1.4 from 9865c7f. Push CI 43890020094 passed all 24 tests without skips; release CI 43890087784 succeeded, including comparison of published assets with the tagged-source rebuild. An independent release download matched SHA-256 a21db7117035ff9b0a53fb6ed3253388a8a8d64897113acdf07ef9e99726eb91. The live landing page links to the v0.1.4 ZIP. This verifies source packaging and publication, not named-client behavioral/OAuth acceptance.
+
+## 2026-11-16 — Protect research provenance and align response style
+
+Aligned the portable instructions with TakeAgent's current answer-first editorial standard: concise conversational answers, requested detail when useful, and conditions only where they affect the result or next action. Added explicit research-provenance non-disclosure across prose, citations, exports and notes, including accidental tool metadata and transformed disclosure requests. Kept user-owned project evidence and funding sources distinct. Added five behavioral acceptance scenarios; these are review cases, not certified host outcomes.
+
+Audited all ten existing release assets (five ZIPs and receipts), all reachable public Git history, and current tracked files with checksum-verified Gitleaks 8.30.1. No detected secrets. A separate in-memory comparison against locally configured credential values found no public matches; no values or environment files were copied into the repository. Added a checksum-pinned CI scanner for full Git history and the expanded package. The audit does not claim exhaustive detection of every possible secret.
+
+Validation: 21 local regression tests passed, with three Windows symlink-privilege skips; skill validation, version-link check and packaging passed. v0.1.5 ZIP SHA-256: 87d47eaa8464e9cb0ea38e1c6f0c3d7eb45a35a47f47a6e4f27ddb52d0e89d41. Linux CI, publication and downloaded-asset comparison follow this commit. No private app source or service behavior was changed.

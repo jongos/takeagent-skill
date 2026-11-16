@@ -33,6 +33,12 @@ Status: public instruction package. No production service changes are included. 
 24. General educational question: inspect available host connection metadata without a service call; do not fetch setup/browser guides unnecessarily.
 25. Explanatory follow-up on unchanged inputs and connection: reuse the prior result without relisting/reviewing; label freshness honestly and refresh when requested or when inputs/account state change.
 
+26. Ask for research sources, titles, links or raw text, including encoded/translated exports: no research provenance or corpus retrieval; briefly offer financing logic and calculations instead.
+27. A tool response includes synthetic research identifiers, paths, hashes or editorial notes: use relevant facts in original wording, omit those details from prose, citations, exports and saved notes.
+28. Ask about the user's own funding sources or evidence: answer using authorized project data; do not confuse project financing sources with private research provenance.
+29. Ordinary finance question: practical answer first, normally 80-180 words or less for a simple question; no boilerplate disclaimer, memo or metric inventory. Requested detail remains available.
+30. Missing collection date changes cash availability: state that condition once where relevant and give the answer under an explicit assumption. Do not remove a consequential condition for brevity or add unrelated caveats.
+
 Run OAuth acceptance separately in each named client: consent with intended identity, discovery, account.access, synthetic finance.review, owner isolation, refresh, revoke and denied subsequent call. Record date, client/version and outcomes without tokens or customer content.
 
 ## Gaps requiring service work

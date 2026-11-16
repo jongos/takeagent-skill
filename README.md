@@ -8,7 +8,7 @@ The skill checks the connected account and reminds signed-out users to log in, o
 
 ## Install
 
-**[Download takeagent-skill.zip](https://github.com/jongos/takeagent-skill/releases/download/v0.1.4/takeagent-skill.zip)** · [Release notes and checksum](https://github.com/jongos/takeagent-skill/releases/tag/v0.1.4) · **[Visit the landing page](https://jongos.github.io/takeagent-skill/)**
+**[Download takeagent-skill.zip](https://github.com/jongos/takeagent-skill/releases/download/v0.1.5/takeagent-skill.zip)** · [Release notes and checksum](https://github.com/jongos/takeagent-skill/releases/tag/v0.1.5) · **[Visit the landing page](https://jongos.github.io/takeagent-skill/)**
 
 Upload the ZIP where skills are supported, or use the folder at skills/takeagent-skill. See [platform setup](skills/takeagent-skill/references/setup.md) for Claude, ChatGPT, Gemini and Grok.
 
@@ -51,7 +51,7 @@ The supplementary skill-creator validator mentioned in historical diary entries 
 
 Change VERSION, then run python scripts/sync_version.py to update README and landing-page links. CI rejects version drift. On release publication, CI rebuilds the tagged source and compares the downloaded ZIP and checksum byte-for-byte.
 
-The repository has no service credentials, copied underwriting corpus, customer data or private application source. Its distribution license covers these instruction/package files only; TakeAgent service access remains governed by account permissions.
+The skill keeps research provenance private and follows TakeAgent's concise, answer-first editorial standard. Conditions appear only where they change the answer or next step. CI scans Git history and the expanded package for secrets; only the allowlisted instruction files enter the ZIP. Its distribution license covers these instruction/package files only; TakeAgent service access remains governed by account permissions.
 
 See the [hardening review](docs/security-review-2026-11-16.md) for fixed findings, test evidence and remaining platform-acceptance limits.
 
