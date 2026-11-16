@@ -55,3 +55,9 @@ Addressed review findings with consistent 401 recovery, explicit host enforcemen
 Replaced ad hoc metadata/link checks with pinned PyYAML and markdown-it-py build dependencies. Safe metadata rejects duplicate keys, unsafe tags, aliases and incorrect types; Markdown validation handles reference links and excludes code examples. VERSION now drives download links through a sync/check command. Release-triggered CI rebuilds the tagged source and compares both public assets with that build, using read-only permissions.
 
 Validation: 24-test suite has 21 local passes and 3 Windows symlink skips. Initial new test-fixture name collision was corrected before final validation. Tests cover the reproduced validator bugs plus version drift and tampered release data. Skill validator and package build passed; SHA-256 9c408156c8e4f482678d3007580100138a47b9faf952912a93af500944e664b0. Mobile Set Up visibility and navigation passed at 320/390/600px; broader page controls and overflow checks passed. Linux CI, release-asset comparison and live-page checks follow this source commit. Host-specific OAuth/behavioral acceptance is not claimed.
+
+## 2026-11-16 — Record issue-fix release and closure verification
+
+Published v0.1.3 from c06f143. Push CI ran all 24 tests without skips; release CI 43887886167 passed its actual tagged-source versus uploaded-assets comparison step. The independently downloaded ZIP/checksum matched the source build. Verified the live release link and working mobile Set Up navigation at 320/390/600px.
+
+Commented on all 15 reviewed GitHub issues with source/CI evidence and verified their final states: 14 completed, #11 not planned for historical diary redaction. Updated the issue-review receipt. Remaining client-specific behavioral and OAuth acceptance limits are preserved; these closures do not claim deterministic prompt enforcement.

@@ -27,3 +27,9 @@ Local regression suite: 21 passed, 3 symlink tests skipped by Windows privilege 
 The mobile setup link passed at 320/390/600px; 1440/390/320px layouts, tabs/keyboard, font loading and FAQ controls passed. Rendered mobile navigation was inspected.
 
 These fixes resolve the documentation and packaging findings. They do not implement vendor-specific policy middleware or certify host-model behavior. Follow docs/acceptance.md for named-client behavioral testing. Generic private-repository mentions and honest validation history are not credentials or evidence of a security breach.
+
+## Completed Publication and Issue Disposition
+
+All 24 tests passed without skips in Linux push CI [43887789728](https://github.com/jongos/takeagent-skill/actions/runs/43887789728). Release-event CI [43887886167](https://github.com/jongos/takeagent-skill/actions/runs/43887886167) successfully rebuilt the v0.1.3 tag and compared both downloaded release assets. An independent local download also matched SHA-256 9c408156c8e4f482678d3007580100138a47b9faf952912a93af500944e664b0.
+
+The live page points to v0.1.3, and its Set Up navigation was verified at 320/390/600px. Issues 1–15 each received an evidence-backed comment: 14 were closed as completed; #11 was closed as not planned for the remaining historical-diary redaction suggestion. Host-specific behavioral/OAuth testing remains a documented acceptance gap, not a claimed implemented control.
