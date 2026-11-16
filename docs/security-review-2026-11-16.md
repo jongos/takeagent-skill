@@ -31,3 +31,7 @@ The updated skill is checked with the skill-creator validator. Account/prompt br
 - The builder assumes a trusted local checkout. It does not lock out concurrent hostile filesystem changes, authenticate publisher identity or certify that allowlisted prose contains no secrets. Review files before publication.
 - Each output is replaced atomically, but ZIP/checksum are not a multi-file transaction. Always verify the checksum before upload and after download.
 - Checksums detect byte changes; they are not signed provenance.
+
+## Completed Publication Checks
+
+Linux CI run [43885942118](https://github.com/jongos/takeagent-skill/actions/runs/43885942118) passed all twelve tests with no skips, including the three symlink cases unavailable locally. The Linux ZIP matched the Windows build SHA-256 ebc22131b61ae40d3e361832e7fb47c06acf784ddbc7cff94b3964119774312a. The published v0.1.2 ZIP was downloaded and matched that hash. The live landing page points to v0.1.2. These checks close packaging verification, not the named-client behavioral/OAuth gaps above.

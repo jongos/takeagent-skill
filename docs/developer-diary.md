@@ -43,3 +43,7 @@ Replaced the package builder's validate-then-reread flow with one bounded text s
 Validation: nine tests passed locally; three actual symlink cases skipped under Windows privilege restrictions. Fixed an initially failing test fixture that doubled existing CRLFs rather than converting LF to CRLF. The final skill validator and package build passed, producing SHA-256 3131cf8a4a4f07cdf4046efcc4d22e625c79cc4cee2a6eda3d22c2502d6f6eeb. Linux CI and release download verification follow this source commit. Updated README/page download targets for v0.1.2. Review limits, including no named-client behavioral certification and no protection against a concurrently hostile local filesystem, are documented in the security review.
 
 Final instruction review clarified authenticated plan-denial responses and treats reconnections with unconfirmed identity as account changes. Rebuilding after that clarification produced final SHA-256 ebc22131b61ae40d3e361832e7fb47c06acf784ddbc7cff94b3964119774312a, superseding the intermediate build above.
+
+## 2026-11-16 — Record hardened release verification
+
+Linux CI run 43885942118 completed all twelve packaging tests without skips, including linked input/root/output rejection. Its build matched the local Windows SHA-256 ebc22131b61ae40d3e361832e7fb47c06acf784ddbc7cff94b3964119774312a. Published v0.1.2 from 2bfc873; the downloaded release ZIP matched, and the live landing page serves the new download target. Updated the review with completed verification. Named-client behavioral and OAuth acceptance remain unperformed.
