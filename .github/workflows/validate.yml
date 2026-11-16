@@ -3,6 +3,8 @@ on:
   push:
     branches: [main]
   pull_request:
+  release:
+    types: [published]
 permissions:
   contents: read
 jobs:
@@ -13,10 +15,24 @@ jobs:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           persist-credentials: false
-      - name: Run packaging regression tests
-        run: python3 -m unittest discover -s tests -v
+          ref: ${{ github.event.release.tag_name || github.sha }}
+      - name: Install pinned build dependencies
+        run: python3 -m pip install -r requirements-build.txt
+      - name: Run regression tests and check version links
+        run: |
+          python3 -m unittest discover -s tests -v
+          python3 scripts/sync_version.py --check
       - name: Build and verify the skill archive
         run: |
           python3 scripts/package_skill.py
           cd dist
           sha256sum --check takeagent-skill.zip.sha256
+      - name: Compare published assets with the release-tag build
+        if: github.event_name == 'release'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: |
+          gh release download "$RELEASE_TAG" --dir downloaded -p 'takeagent-skill.zip*'
+          python3 scripts/verify_release.py --tag "$RELEASE_TAG"

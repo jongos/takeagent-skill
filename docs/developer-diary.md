@@ -47,3 +47,11 @@ Final instruction review clarified authenticated plan-denial responses and treat
 ## 2026-11-16 — Record hardened release verification
 
 Linux CI run 43885942118 completed all twelve packaging tests without skips, including linked input/root/output rejection. Its build matched the local Windows SHA-256 ebc22131b61ae40d3e361832e7fb47c06acf784ddbc7cff94b3964119774312a. Published v0.1.2 from 2bfc873; the downloaded release ZIP matched, and the live landing page serves the new download target. Updated the review with completed verification. Named-client behavioral and OAuth acceptance remain unperformed.
+
+## 2026-11-16 — Resolve reviewed skill issues and automate release checks
+
+Addressed review findings with consistent 401 recovery, explicit host enforcement/memory limitations, browser handoff/minimal-context guidance, tier definitions, historical release notes, dependency/license clarity and visible mobile setup navigation. Preserved the historical diary; shortened the README's private-repository reference. Issues 6, 9 and 13 were already resolved and received evidence-backed closure comments.
+
+Replaced ad hoc metadata/link checks with pinned PyYAML and markdown-it-py build dependencies. Safe metadata rejects duplicate keys, unsafe tags, aliases and incorrect types; Markdown validation handles reference links and excludes code examples. VERSION now drives download links through a sync/check command. Release-triggered CI rebuilds the tagged source and compares both public assets with that build, using read-only permissions.
+
+Validation: 24-test suite has 21 local passes and 3 Windows symlink skips. Initial new test-fixture name collision was corrected before final validation. Tests cover the reproduced validator bugs plus version drift and tampered release data. Skill validator and package build passed; SHA-256 9c408156c8e4f482678d3007580100138a47b9faf952912a93af500944e664b0. Mobile Set Up visibility and navigation passed at 320/390/600px; broader page controls and overflow checks passed. Linux CI, release-asset comparison and live-page checks follow this source commit. Host-specific OAuth/behavioral acceptance is not claimed.

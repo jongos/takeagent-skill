@@ -8,6 +8,8 @@ import re
 import stat
 import tempfile
 import zipfile
+import yaml
+from markdown_it import MarkdownIt
 
 ROOT = Path(__file__).resolve().parents[1]
 FILES = ("SKILL.md", "references/setup.md", "references/workflows.md")
@@ -29,6 +31,60 @@ def checked_path(root, path):
         raise ValueError("Resolved path escapes repository")
     return path
 
+class UniqueSafeLoader(yaml.SafeLoader):
+    """Safe YAML with duplicate keys rejected instead of silently overwritten."""
+
+def unique_mapping(loader, node, deep=False):
+    result = {}
+    for key_node, value_node in node.value:
+        key = loader.construct_object(key_node, deep=deep)
+        if not isinstance(key, str) or key in result:
+            raise ValueError("Metadata keys must be unique strings")
+        result[key] = loader.construct_object(value_node, deep=deep)
+    return result
+
+UniqueSafeLoader.add_constructor(
+    yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, unique_mapping
+)
+
+def frontmatter_body(text):
+    front = re.match(r"\A---\n(.*?)\n---(?:\n|$)", text, re.S)
+    if not front:
+        raise ValueError("Missing skill frontmatter")
+    try:
+        if any(isinstance(token, (yaml.tokens.AnchorToken, yaml.tokens.AliasToken))
+               for token in yaml.scan(front.group(1))):
+            raise ValueError("Metadata anchors and aliases are not supported")
+        fields = yaml.load(front.group(1), Loader=UniqueSafeLoader)
+    except yaml.YAMLError as error:
+        raise ValueError("Invalid YAML metadata") from error
+    if (not isinstance(fields, dict) or set(fields) != {"name", "description"}
+            or fields["name"] != "takeagent-skill"
+            or not isinstance(fields["description"], str)
+            or not fields["description"].strip()):
+        raise ValueError("Expected a skill name and nonempty string description")
+    return text[front.end():]
+
+def markdown_links(text):
+    parser = MarkdownIt("commonmark")
+    # Parse unsafe destinations too, so the package validator can reject them.
+    parser.validateLink = lambda url: True
+    environment = {}
+    tokens = parser.parse(text, environment)
+    targets = []
+    def walk(items):
+        for token in items:
+            if token.type in {"link_open", "image"}:
+                target = token.attrGet("href" if token.type == "link_open" else "src")
+                if target is not None:
+                    targets.append(target)
+            if token.children:
+                walk(token.children)
+    walk(tokens)
+    # Definitions are validated even when not yet used by a link.
+    targets.extend(ref["href"] for ref in environment.get("references", {}).values())
+    return targets
+
 def snapshot(root):
     skill = checked_path(root, Path(root) / "skills" / "takeagent-skill")
     content = {}
@@ -42,15 +98,10 @@ def snapshot(root):
             raise ValueError(f"Package input is too large: {name}")
         text = raw.decode("utf-8").replace("\r\n", "\n").replace("\r", "\n")
         content[name] = (text.rstrip("\n") + "\n").encode("utf-8")
-    main = content["SKILL.md"].decode("utf-8")
-    front = re.match(r"\A---\n(.*?)\n---\n", main, re.S)
-    if not front:
-        raise ValueError("Missing skill frontmatter")
-    fields = front.group(1).splitlines()
-    if len(fields) != 2 or fields[0] != "name: takeagent-skill" or not fields[1].startswith("description: ") or not fields[1][13:].strip():
-        raise ValueError("Invalid skill name or description")
+    main_body = frontmatter_body(content["SKILL.md"].decode("utf-8"))
     for name, raw in content.items():
-        for target in re.findall(r"\]\(([^)]+)\)", raw.decode("utf-8")):
+        text = main_body if name == "SKILL.md" else raw.decode("utf-8")
+        for target in markdown_links(text):
             parsed = urlsplit(target)
             if parsed.scheme or parsed.netloc:
                 if parsed.scheme != "https" or not parsed.netloc or parsed.username or parsed.password:
