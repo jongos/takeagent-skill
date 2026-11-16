@@ -4,11 +4,11 @@ A portable instruction package for using [TakeAgent](https://takeagent.ai) from 
 
 **Access follows the user's TakeAgent account.** No account means free educational guidance in the host assistant. Connected tools require the user's own OAuth connection and an eligible TakeAgent tier. Installing the skill never upgrades an account.
 
-For a Free/unconnected user who requests connected features, the skill suggests the basic paid tier once per session: "For connected agent tools, upgrade to EP."
+The skill checks the connected account and reminds signed-out users to log in, once per session. It never assumes a disconnected user is Free. For a verified Free/plan-restricted user who requests connected features, it suggests the basic paid tier once per session: "For connected agent tools, upgrade to EP."
 
 ## Install
 
-**[Download takeagent-skill.zip](https://github.com/jongos/takeagent-skill/releases/download/v0.1.0/takeagent-skill.zip)** · [Release notes and checksum](https://github.com/jongos/takeagent-skill/releases/tag/v0.1.0) · **[Visit the landing page](https://jongos.github.io/takeagent-skill/)**
+**[Download takeagent-skill.zip](https://github.com/jongos/takeagent-skill/releases/download/v0.1.1/takeagent-skill.zip)** · [Release notes and checksum](https://github.com/jongos/takeagent-skill/releases/tag/v0.1.1) · **[Visit the landing page](https://jongos.github.io/takeagent-skill/)**
 
 Upload the ZIP where skills are supported, or use the folder at skills/takeagent-skill. See [platform setup](skills/takeagent-skill/references/setup.md) for Claude, ChatGPT, Gemini and Grok.
 

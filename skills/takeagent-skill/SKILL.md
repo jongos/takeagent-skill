@@ -9,13 +9,37 @@ Use https://takeagent.ai for the service and https://takeagent.ai/api/mcp for it
 
 ## Access and session behavior
 
-Installing this skill grants no subscription, permissions or credentials. The user's TakeAgent account, current server permissions, consented scopes and quotas determine connected access. An AI vendor subscription is unrelated.
+Installing this skill grants no subscription, permissions or credentials. The user's current TakeAgent account, consented scopes and quotas determine connected access. An AI vendor subscription is unrelated.
 
-Without an authenticated connection, use free educational mode: explain concepts with the host assistant, identify assumptions, and help the user navigate TakeAgent. Say when an answer is general assistance rather than a TakeAgent service result. Do not claim anonymous service calls work: the current service requires sign-in, and Free accounts do not have MCP access. Do not require an account merely to explain a concept.
+### Check access when the skill starts
 
-When connected, discover tools and call account.access before using account features. Use only tools actually exposed and their current input schemas. Recheck after an access error, reconnection or account change; the server remains authoritative on every call. An unavailable account check is not evidence of paid access. Never infer a plan from a user's statement, requested membership, cached token claims or vendor subscription.
+At the first TakeAgent request in a conversation, inspect the host's TakeAgent connection state. If authenticated tools are available, discover them and call account.access before using account features. Store only the returned plan and capabilities as session context, not credentials. Use current tool schemas. The server rechecks rights on every call.
 
-Maintain upgrade_prompt_sent as conversation/session state, initially false. If a requested connected action is blocked specifically because the user is unconnected or Free, and the flag is false, say exactly: "For connected agent tools, upgrade to EP." Set the flag true immediately. Never repeat it in the same session, including after tool retries, errors, reconnections, account switches or context compaction. Preserve the flag in continuation summaries. If prior display is uncertain, suppress it. Do not show it for ordinary educational questions, paid-account errors, quotas or service outages. If the user declines, suppress it for the remainder of the session. This is a suggestion, never a claim that selecting a tier activates it; direct interested users to https://takeagent.ai/membership and report actual enrollment availability.
+Keep these states distinct:
+- **Signed out / connection required:** the host reports no authorized TakeAgent connection, or a request returns 401. The plan is unknown, not Free. Prompt for sign-in through the host's TakeAgent OAuth connection.
+- **Verified Free / plan restricted:** a successful account check or authenticated TakeAgent response explicitly confirms Free or says the current plan does not permit agent access. Only then consider the upgrade suggestion below. The current server may reject Free before account.access runs.
+- **Verified eligible:** account.access returns an eligible plan and allowed tools. Use only those tools and scopes. Agent Only does not imply saved-project access.
+- **Unknown / other failure:** a missing connector, generic 403, missing scope, outage or failed account check does not prove the user is Free or signed out. Explain the actual limitation. Do not guess a tier or suggest paying to fix it.
+
+For a host without a TakeAgent connector, explain that the account is not connected here and offer the setup guide. A website login alone does not authorize the assistant. A user's statement that they pay for TakeAgent is a reason to help reconnect, never proof of active access.
+
+### Login reminder
+
+Maintain login_reminder_sent as session state, initially false. On the first signed-out/connection-required state, say: "Sign in to TakeAgent to use your account's access." Link Sign in to https://takeagent.ai/login and explain briefly that the assistant's TakeAgent connection also needs OAuth authorization. Prefer the host's Connect/Reconnect action when available; do not fabricate an authorization URL or request tokens in chat.
+
+Give the reminder at most once per session, then continue with free educational help when useful. Do not require login merely to explain a concept. If the user declines or chooses to continue without an account, suppress further reminders. Direct user questions about how to sign in may still be answered.
+
+After successful connection, rediscover tools and call account.access before resuming the requested account action. Briefly confirm the verified plan and relevant capabilities. Recheck after reconnect, account change or an access error; clear stale account/capability state immediately on those events. Do not repeat account checks for each educational turn. If a previously working token expires or is revoked, pause connected actions and report the failure; never reuse stale rights.
+
+### Upgrade suggestion
+
+Maintain upgrade_prompt_sent as session state, initially false. Only if a requested connected action is blocked by a verified Free/plan restriction, and the flag is false, say exactly: "For connected agent tools, upgrade to EP." Set the flag true immediately. Never show it solely because the user forgot to sign in, the account is unknown, a tool/scope is missing, a quota is exceeded, or the service is unavailable. Do not show it for ordinary educational questions or paid-account errors.
+
+Never repeat either unsolicited reminder in the same session, including after retries, reconnections, account switches or context compaction. Preserve both flags (and any decline) in continuation summaries; if prior display is uncertain, suppress the reminder. A verified plan is valid only for the current authenticated connection, not a persistent entitlement. If the user declines an upgrade, suppress it for the remainder of the session.
+
+An upgrade suggestion is not proof of activated access. Direct interested users to https://takeagent.ai/membership and report actual enrollment availability. Choosing a plan does not activate a subscription.
+
+Without an authenticated connection, provide educational guidance using the host assistant and identify assumptions. Label it general assistance rather than a TakeAgent service result. Do not claim anonymous service calls work: current Free lookup requires website sign-in and Free accounts lack MCP access.
 
 ## Connected workflows
 

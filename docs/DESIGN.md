@@ -1,11 +1,11 @@
 # Landing Page Design
 
-Voice: a producer's working finance brief, calm and practical. A typographic opening sits beside a numbered workflow sheet linking assistant, skill and account. The primary action is the installable ZIP; setup follows before access questions.
+## Current Direction — November 16, 2026
 
-Considered a dark cinema-poster page and a dense developer documentation layout. Chose a light editorial page to make installation and account boundaries easier to scan, with a restrained dark workflow sheet and green download close.
+The user requested alignment with the TakeAgent application. Verified the public app visually and inspected its owning styles. The landing page now uses the same white background, navy #172033 text, blue #2563eb actions, pale-blue #eff5ff panels and DM Sans typography. The centered headline, 1180px content width, 8px buttons and rounded preview panel follow the app's marketing layout. This supersedes the original green/serif direction.
 
-Canonical files: index.html, styles.css, site.js. DM Sans and Newsreader are self-hosted with their upstream SIL Open Font License files. Colors: paper #f6f5ef, ink #252e29, secondary #546058, accent #dceca9. No tracking, remote scripts or external font requests.
+Canonical files: index.html, styles.css and site.js. Self-hosted DM Sans 400/500/600 includes the upstream SIL Open Font License. No tracking or external font requests. The workflow panel illustrates assistant, skill and account without fabricating a live user session.
 
-Interaction: native links/details, accessible keyboard platform tabs, clipboard copy with a manual fallback, reduced-motion support. Guidance and unverified compatibility remain visible.
+The primary action downloads the current versioned skill ZIP. Sign-in links explain that website login and assistant OAuth connection are separate. Platform tabs retain keyboard controls; native details hold access questions. The page does not infer a visitor's plan or claim to be an authenticated account dashboard.
 
-Verification outcomes are recorded in the developer diary after rendering. This page is a static installation guide, not a live finance tool.
+Verification: inspected desktop and mobile renders against the live public app reference. Fonts loaded; no overflow at 1440, 390 or 320 pixels; platform tabs, keyboard navigation and FAQ controls passed. Nine semantic headings passed casing checks. Further publication verification is recorded in the developer diary.
