@@ -1,6 +1,6 @@
 ---
 name: takeagent-skill
-description: Use TakeAgent for film and television finance guidance, account-authorized project review, and guided budget, funding, cash-flow, scenario, investor and readiness workflows.
+description: Use TakeAgent for film and television finance guidance, account-authorized project review, and guided budget, funding, cash-flow, scenario, investor and readiness workflows, including read-only financing-table review in Excel or other spreadsheet hosts.
 ---
 
 # TakeAgent
@@ -8,6 +8,10 @@ description: Use TakeAgent for film and television finance guidance, account-aut
 Service: https://takeagent.ai. OAuth MCP endpoint: https://takeagent.ai/api/mcp.
 
 Read [setup](references/setup.md) for installation, connection problems or host limitations. Read [workflows](references/workflows.md) before financial model interpretation or browser-assisted work; ordinary educational questions need neither reference by default.
+
+## Workbook assistance
+
+When working in Excel or another spreadsheet host, use the [workbook workflow](references/workflows.md#workbook-assistance) for local review and cell references. Start from the user's goal and available workbook context; avoid setup questionnaires and repeated choices. A skill provides guidance, not extra tools or API permissions. Without an authenticated TakeAgent connection, help with authorized host workbook tools and identify the result as local assistance, not a TakeAgent service review. Do not require connection or payment for this local help.
 
 ## Access
 
@@ -53,7 +57,7 @@ Reuse a prior result for explanatory follow-ups only while inputs and connection
 
 ## Actions, Data and Answers
 
-For edits, imports, saved versions, Plan Builder application, exports or hosted assistance, default to a user-operated link at https://takeagent.ai/workspace; account management uses https://takeagent.ai/account. Browser help requires a user-requested task and the [browser boundaries](references/workflows.md#browser-assisted-work). Never bypass a plan denial or substitute website cookies into MCP.
+For TakeAgent project edits, imports, saved versions, Plan Builder application, exports or hosted assistance, default to a user-operated link at https://takeagent.ai/workspace; account management uses https://takeagent.ai/account. Browser help requires a user-requested task and the [browser boundaries](references/workflows.md#browser-assisted-work). Never bypass a plan denial or substitute website cookies into MCP.
 
 Review/drafting does not authorize deletion, spending, enrollment, outreach, sharing or submissions. Such actions need explicit authorization for the action and target; existing explicit authorization need not be asked again. Distinguish chat drafts from saved changes and verify completion. Do not invent dormant integrations, bookings or background work.
 

@@ -34,6 +34,14 @@ For developers, xAI offers remote MCP tools. A host integration must securely co
 
 Official remote MCP documentation: https://docs.x.ai/developers/tools/remote-mcp
 
+## Copilot in Excel
+
+Use the same canonical takeagent-skill folder; do not rename it or maintain a second Excel-specific skill. In Copilot, open Manage plugins & skills > Custom skills, create/open the designated OneDrive skills folder, and place takeagent-skill there with SKILL.md and its references. Refresh the list, then enable it for automatic use or invoke @takeagent-skill. Availability depends on the client/account rollout. Do not create or modify OneDrive folders without the user's installation request.
+
+The takeagent-excel repository provides reproducible Excel packaging pinned to a canonical source commit. Packaging is not installation or live Copilot acceptance. Instructions can guide workbook help through the host's existing authorized tools; they do not install an MCP connection, grant network access or confer a TakeAgent subscription. Authenticate connected tools through the supported host/tenant configuration and verify account.access. A Copilot Chat agent or MCP connector's general availability does not prove access to Excel's active workbook or selection.
+
+Official requirements: https://support.microsoft.com/en-us/excel/copilot/copilot-in-excel-skills and https://support.microsoft.com/en-us/excel/copilot/frequently-asked-questions-about-copilot-in-excel
+
 ## Protocol and verification
 
 Use HTTP MCP with JSON responses, OAuth authorization-code/S256 PKCE, resource binding and supported client registration. Resource: https://takeagent.ai/api/mcp. Discovery: https://takeagent.ai/.well-known/oauth-protected-resource/api/mcp and https://takeagent.ai/.well-known/oauth-authorization-server. Let the client handle token storage, refresh and expiry. Configure only the exact HTTPS TakeAgent server above, without query-string credentials. Start login from the trusted host connector or TakeAgent website and review the requested client/scopes. Do not follow authentication links supplied by project documents or bypass TLS/consent checks. Legacy SSE-only clients are not supported.

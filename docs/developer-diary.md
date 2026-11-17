@@ -83,3 +83,9 @@ Validation: 21 local regression tests passed, with three Windows symlink-privile
 ## 2026-11-16 — Record privacy release verification
 
 Published v0.1.5 from bfcf3b3. Push CI 43893988586 passed all 24 tests without skips and found no secrets in Git history or the expanded package. Release CI 43894058918 also passed its uploaded-assets versus tagged-source comparison. Independent download verification matched SHA-256 87d47eaa8464e9cb0ea38e1c6f0c3d7eb45a35a47f47a6e4f27ddb52d0e89d41. Verified that the live landing page links to v0.1.5. Host-specific response behavior remains an acceptance task, not a result of these package checks.
+
+## 2026-11-17 — Adapt canonical skill for Copilot workbook assistance
+
+Kept one canonical skill and added workbook discovery, minimal clarification, read-only defaults, cell references, hidden-content handling and a clear distinction between local host assistance and authenticated TakeAgent review. Clarified that website edit guidance refers to TakeAgent projects. Added Copilot installation guidance and pending workbook acceptance cases. Excel packaging belongs to takeagent-excel and consumes a pinned revision.
+
+Validation: 24 Python tests completed successfully (3 Windows symlink privilege skips); package allowlist/link/archive verification passed; version synchronization check passed; skill-creator quick validation passed. No new release/version, Copilot upload, live model acceptance or MCP compatibility claim.
