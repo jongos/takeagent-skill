@@ -95,3 +95,9 @@ Validation: 24 Python tests completed successfully (3 Windows symlink privilege 
 Moved essential reconciliation, currency/scale, bridge linkage, native-cell citation and hidden-content boundaries into the canonical entrypoint so they apply even without loading reference files. Added a concrete total-versus-payment example and regression acceptance cases. Local host assistance remains read-only and separate from authenticated service review. No forked Excel skill was created.
 
 Validation: 24 Python tests succeeded with three Windows symlink privilege skips; canonical archive/link checks and version synchronization passed. Skill validation passed with Python UTF-8 mode (the validator's default Windows encoding could not read curly quotes). Live reinstallation and model retests follow this commit; text changes do not establish host compliance or hidden-data confidentiality.
+
+## 2026-11-17 — Make cell-only workbook answers the default
+
+Live retesting of 252d4a4 corrected total-versus-payment arithmetic, unspecified currency and hidden-value echoing. Raw file citations persisted until an explicit cell-only, three-bullet follow-up, which also produced the desired two clarification questions. Added that demonstrated response format to the canonical workbook instructions.
+
+Validation: canonical package/link validation and UTF-8 skill validation passed. The new default still requires a fresh-chat retest; the successful follow-up alone is not proof of automatic compliance. No service or security boundary changed.
