@@ -54,7 +54,7 @@ On reconnect, account change or access error, discard stale capabilities and rec
 
 ## Tools and Efficient Use
 
-Use only these read-only operations, matching their service identity even if the host namespaces names. Newly discovered tools do not automatically authorize additional actions.
+Use the operations below only when runtime discovery and account.access expose them for the current connection. Match their service identity even if the host namespaces names. Discovery does not authorize writes; apply the user-action and consent checks below.
 
 - **account.access:** verify current plan, project permission and available tools. Do not repeat it for every educational turn.
 - **wiki.search:** ask a focused question; respect matchQuality and no_match. Continue with the same question and continuation.nextOffset. Stop when answered, continuation ends, or offsets repeat/fail to advance.
@@ -62,13 +62,15 @@ Use only these read-only operations, matching their service identity even if the
 - **projects.read:** read the selected accessible ID. Reuse an ID already verified for the current connection rather than relisting unnecessarily; never guess another owner's ID.
 - **finance.review:** read the current input schema, submit only needed user-authorized project inputs, and interpret results using the workflow guide. Money uses integer minor units (USD cents). Correct validation errors without inventing missing facts. Review does not save changes or approve financing.
 
+Additional scoped tools: **plans.compare** reads saved-version differences; **plans.saveDraft** saves a user-requested named proposal with projects:write consent, without changing working rows. **context.create/read** handle explicitly requested temporary content for eligible Agent Only connections. **skills.list, skills.setInstalled, skills.inspectFile, skills.previewFile and skills.preview** support optional report previews. Read [scoped workflows](references/workflows.md#scoped-tools) before using any of these operations. Do not auto-save, store content, install preferences or transmit attachments during ordinary review. A missing tool means use the supported website/local workflow, not an alternate endpoint.
+
 For pagination, default to five pages per request, report partial coverage and offer continuation. User-requested broader coverage may extend that budget, never quotas or repeated cursors. Do not automatically retry 401/403/429 or repeated validation errors. Reconnect, respect retry timing or obtain corrected inputs; retry a transient non-authentication read failure at most once.
 
 Reuse a prior result for explanatory follow-ups only while inputs and connection remain unchanged; identify it as a prior result where freshness matters. Refresh when requested or when inputs/account state change. Do not present cached results as newly retrieved.
 
 ## Actions, Data and Answers
 
-For TakeAgent project edits, imports, saved versions, Plan Builder application, exports or hosted assistance, default to a user-operated link at https://takeagent.ai/workspace; account management uses https://takeagent.ai/account. Browser help requires a user-requested task and the [browser boundaries](references/workflows.md#browser-assisted-work). Never bypass a plan denial or substitute website cookies into MCP.
+For working-project edits, project creation, imports, Plan Builder application, exports or hosted assistance not exposed by an authorized tool, default to a user-operated link at https://takeagent.ai/workspace; account management uses https://takeagent.ai/account. Browser help requires a user-requested task and the [browser boundaries](references/workflows.md#browser-assisted-work). Never bypass a plan denial or substitute website cookies into MCP.
 
 Review/drafting does not authorize deletion, spending, enrollment, outreach, sharing or submissions. Such actions need explicit authorization for the action and target; existing explicit authorization need not be asked again. Distinguish chat drafts from saved changes and verify completion. Do not invent dormant integrations, bookings or background work.
 

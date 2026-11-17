@@ -8,7 +8,7 @@ The skill checks the connected account and reminds signed-out users to log in, o
 
 ## Install
 
-**[Download takeagent-skill.zip](https://github.com/jongos/takeagent-skill/releases/download/v0.1.5/takeagent-skill.zip)** · [Release notes and checksum](https://github.com/jongos/takeagent-skill/releases/tag/v0.1.5) · **[Visit the landing page](https://jongos.github.io/takeagent-skill/)**
+**[Download takeagent-skill.zip](https://github.com/jongos/takeagent-skill/releases/download/v0.1.6/takeagent-skill.zip)** · [Release notes and checksum](https://github.com/jongos/takeagent-skill/releases/tag/v0.1.6) · **[Visit the landing page](https://jongos.github.io/takeagent-skill/)**
 
 Upload the ZIP where skills are supported, or use the folder at skills/takeagent-skill. See [platform setup](skills/takeagent-skill/references/setup.md) for Claude, ChatGPT, Gemini and Grok.
 
@@ -24,13 +24,13 @@ These are supported packaging/setup paths, not claims of completed end-to-end cl
 
 ## What it covers
 
-Film-finance education, account checks, project discovery, budget/funding review, scenarios, cash timing, debt and collateral review, saved-version interpretation, investor/risk workflows, imports, Plan Builder, exports, and account management. Current MCP tools are read-only; website workflows handle edits and features not exposed as tools. See [coverage](skills/takeagent-skill/references/workflows.md).
+Film-finance education, account checks, project discovery, budget/funding review, scenarios, cash timing, debt and collateral review, saved-version interpretation, investor/risk workflows, imports, Plan Builder, exports, and account management. Discovered tools can also compare/save named draft plans, handle eligible temporary context, and preview optional vendor reports under explicit consent. Website workflows handle working-project edits and features not exposed as tools. See [coverage](skills/takeagent-skill/references/workflows.md).
 
 ## Current limitations
 
 - Anonymous TakeAgent API/MCP access is not implemented by this package. Free educational mode is host assistance; the service's Free lookup currently requires website sign-in.
 - The service currently rejects Free MCP use. Paid rights, quotas and ownership are enforced server-side, not by this text.
-- Full direct tool parity, including writes, hosted reasoning and imports/exports, needs additional service APIs. Website handoffs cover those workflows today.
+- Named draft saves are scoped proposals, not working-project edits. Hosted reasoning and other unavailable operations use website handoffs.
 - Billing/enrollment availability must be checked in TakeAgent. Choosing EP is not proof of activated access.
 - Named-client OAuth/tool/revocation acceptance remains required.
 

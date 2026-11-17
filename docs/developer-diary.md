@@ -101,3 +101,9 @@ Validation: 24 Python tests succeeded with three Windows symlink privilege skips
 Live retesting of 252d4a4 corrected total-versus-payment arithmetic, unspecified currency and hidden-value echoing. Raw file citations persisted until an explicit cell-only, three-bullet follow-up, which also produced the desired two clarification questions. Added that demonstrated response format to the canonical workbook instructions.
 
 Validation: canonical package/link validation and UTF-8 skill validation passed. The new default still requires a fresh-chat retest; the successful follow-up alone is not proof of automatic compliance. No service or security boundary changed.
+
+## 2026-11-17 — Release current workbook and scoped-tool guidance
+
+The public main branch contained three workbook improvements after v0.1.5 that were absent from the downloadable ZIP. Included those changes in v0.1.6 and refreshed the skill against the current service tool contract: scoped named draft saves/comparisons, eligible temporary context, and optional report inspection/previews. Corrected blanket read-only claims in the skill, README and landing page. Runtime discovery remains authoritative; no new live capability is inferred from source alone. Added explicit write consent, ownership/version checks, uncertain-result handling, file-transmission permission and accounting-basis attestations. Kept research non-disclosure and concise editorial rules.
+
+Validation: 21 local regression tests passed; three Windows symlink cases skipped for OS privileges. Package/reference validation and UTF-8 skill validation passed. Windows default-encoding failures in the update helper and generic validator were resolved by running Python in UTF-8 mode. ZIP SHA-256: 74aa454510946caac55702b87f6ad24f7584746198733de3fb714a038fdbf431. CI, publication and downloaded-asset verification follow this commit; named-client acceptance is not inferred from packaging checks.
