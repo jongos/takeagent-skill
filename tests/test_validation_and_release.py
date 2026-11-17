@@ -73,8 +73,22 @@ class ReleaseTests(unittest.TestCase):
         (self.root / "docs").mkdir()
         (self.root / "VERSION").write_text("0.1.3\n")
         self.base = "https://github.com/jongos/takeagent-skill/releases/"
-        (self.root / "README.md").write_text(self.base + "download/v0.1.2/takeagent-skill.zip")
-        (self.root / "docs/index.html").write_text("OPEN SOURCE · v0.1.2 " + self.base + "tag/v0.1.2", encoding="utf-8")
+        readme = (
+            self.base
+            + "download/v0.1.2/takeagent-skill.zip) · [Release notes]("
+            + self.base
+            + "tag/v0.1.2)"
+        )
+        (self.root / "README.md").write_text(readme)
+        landing = (
+            "OPEN SOURCE · v0.1.2 "
+            + sync.LATEST_DOWNLOAD
+            + " "
+            + sync.LATEST_RELEASE
+            + " "
+            + sync.LATEST_DOWNLOAD
+        )
+        (self.root / "docs/index.html").write_text(landing, encoding="utf-8")
 
     def test_stale_version_links_fail_check_and_sync_repairs(self):
         with self.assertRaisesRegex(ValueError, "stale"):
@@ -82,6 +96,24 @@ class ReleaseTests(unittest.TestCase):
         self.assertEqual(sync.synchronize(self.root), "v0.1.3")
         self.assertEqual(sync.synchronize(self.root, check=True), "v0.1.3")
         self.assertIn("/v0.1.3/", (self.root / "README.md").read_text())
+        self.assertIn("OPEN SOURCE · v0.1.3", (self.root / "docs/index.html").read_text())
+
+    def test_pinned_landing_release_urls_are_rejected(self):
+        pinned = (
+            "OPEN SOURCE · v0.1.3 "
+            + self.base
+            + "download/v0.1.2/takeagent-skill.zip"
+        )
+        (self.root / "docs/index.html").write_text(pinned, encoding="utf-8")
+        readme = (
+            self.base
+            + "download/v0.1.3/takeagent-skill.zip) · [Release notes]("
+            + self.base
+            + "tag/v0.1.3)"
+        )
+        (self.root / "README.md").write_text(readme)
+        with self.assertRaisesRegex(ValueError, "latest-release download URL"):
+            sync.synchronize(self.root, check=True)
 
     def test_unsafe_version_is_rejected(self):
         (self.root / "VERSION").write_text("../main")

@@ -1,5 +1,7 @@
 # Issue Review — November 16, 2026
 
+**Historical snapshot.** Facts about live releases, landing-page version pins and CI run counts below reflect the v0.1.3 publication window (November 16, 2026). For current VERSION, README links, workflow behavior and test counts, use `VERSION`, `.github/workflows/validate.yml` and the regression suite in `tests/`.
+
 Reviewed issues 1–15 against v0.1.2, then implemented the following v0.1.3 changes. Issue comments link the relevant commits and CI evidence after publication.
 
 | Issue | Disposition |
