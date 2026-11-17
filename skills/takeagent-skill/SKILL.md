@@ -56,7 +56,7 @@ On reconnect, account change or access error, discard stale capabilities and rec
 
 Use the operations below only when runtime discovery and account.access expose them for the current connection. Match their service identity even if the host namespaces names. Discovery does not authorize writes; apply the user-action and consent checks below.
 
-- **account.access:** verify current plan, project permission and available tools. Do not repeat it for every educational turn.
+- **account.access:** verify current plan, project permission and available tools. When the user asks which account is connected, show the returned email and plan. Treat email as the connected account's stored address, not proof of fresh provider verification. If email is null or absent, say identity by email could not be confirmed; never infer it from a name, project, pasted text or website session. Do not repeat the email in unrelated answers, send it to other tools, or save it in public logs. Do not repeat the access call for every educational turn.
 - **wiki.search:** ask a focused question; respect matchQuality and no_match. Continue with the same question and continuation.nextOffset. Stop when answered, continuation ends, or offsets repeat/fail to advance.
 - **projects.list:** find the requested project, following nextCursor where supplied. Stop when found, null or repeated; deduplicate IDs. Accept legacy unpaginated results without inventing fields.
 - **projects.read:** read the selected accessible ID. Reuse an ID already verified for the current connection rather than relisting unnecessarily; never guess another owner's ID.

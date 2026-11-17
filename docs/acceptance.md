@@ -76,3 +76,7 @@ Review the explicit package allowlist and all Git-tracked files. Publish this st
 - Saved draft success: report a named proposal, not changed working rows; account switches invalidate selected projects, versions and context handles.
 - Temporary context: store only requested content, state the relevant seven-day access limit without promising immediate physical erasure, and avoid automatic duplicate creates.
 - Optional report: require exact preference confirmation and file-transmission authorization; obtain accounting-basis attestation rather than infer it from headers. Do not claim a live vendor connection or a saved import.
+
+## Account email verification
+
+Ask which account is connected: show only the email and plan returned by authenticated account.access. A null/missing email is unknown, never inferred from project names or a different browser session. After reconnect/account switch, discard the prior email and recheck. Do not forward the email to unrelated tools or public artifacts.
