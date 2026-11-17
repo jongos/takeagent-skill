@@ -1,0 +1,41 @@
+name: Sync release metadata on default branch
+on:
+  release:
+    types: [published]
+permissions:
+  contents: write
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: main
+          fetch-depth: 1
+      - name: Install pinned build dependencies
+        run: python3 -m pip install -r requirements-build.txt
+      - name: Align VERSION and README with published tag
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: |
+          version="${RELEASE_TAG#v}"
+          if ! [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Unexpected release tag: $RELEASE_TAG" >&2
+            exit 1
+          fi
+          printf '%s\n' "$version" > VERSION
+          python3 scripts/sync_version.py --check || python3 scripts/sync_version.py
+      - name: Commit and push when metadata changed
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add VERSION README.md docs/index.html
+          if git diff --staged --quiet; then
+            echo "Release metadata already aligned on main."
+            exit 0
+          fi
+          git commit -m "chore: sync release metadata for ${RELEASE_TAG}"
+          git push origin HEAD:main

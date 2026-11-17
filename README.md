@@ -49,7 +49,7 @@ Produces dist/takeagent-skill.zip and its SHA-256 receipt from one bounded, vali
 
 The supplementary skill-creator validator mentioned in historical diary entries was a maintainer check, not a hidden build requirement. The reproducible public validation commands are listed above.
 
-Change VERSION, then run python scripts/sync_version.py to update README and landing-page links. CI rejects version drift. On release publication, CI rebuilds the tagged source and compares the downloaded ZIP and checksum byte-for-byte.
+Change VERSION, then run python scripts/sync_version.py to update README links and the landing-page version badge. The landing page always downloads from GitHub’s latest release URL; only the badge tracks VERSION until the next Pages deploy. CI rejects version drift. On release publication, CI rebuilds the tagged source and compares the downloaded ZIP and checksum byte-for-byte; a follow-up workflow syncs VERSION on default branch when needed.
 
 The skill keeps research provenance private and follows TakeAgent's concise, answer-first editorial standard. Conditions appear only where they change the answer or next step. CI scans Git history and the expanded package for secrets; only the allowlisted instruction files enter the ZIP. Its distribution license covers these instruction/package files only; TakeAgent service access remains governed by account permissions.
 
