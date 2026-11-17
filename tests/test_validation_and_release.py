@@ -122,3 +122,9 @@ class ReleaseTests(unittest.TestCase):
         built, downloaded, _ = self.assets()
         with self.assertRaisesRegex(ValueError, "tag"):
             release.verify(built, downloaded, "v9.9.9", self.root / "VERSION")
+
+class SiteDocumentationTests(unittest.TestCase):
+    def test_landing_page_mentions_sil_ofl_font_license(self):
+        html = (Path(__file__).resolve().parents[1] / "docs" / "index.html").read_text(encoding="utf-8")
+        self.assertIn("SIL OFL", html)
+        self.assertIn('href="fonts/DM-Sans-LICENSE.txt"', html)

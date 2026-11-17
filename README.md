@@ -53,7 +53,7 @@ Change VERSION, then run python scripts/sync_version.py to update README and lan
 
 The skill keeps research provenance private and follows TakeAgent's concise, answer-first editorial standard. Conditions appear only where they change the answer or next step. CI scans Git history and the expanded package for secrets; only the allowlisted instruction files enter the ZIP. Its distribution license covers these instruction/package files only; TakeAgent service access remains governed by account permissions.
 
-See the [hardening review](docs/security-review-2026-11-16.md) for fixed findings, test evidence and remaining platform-acceptance limits.
+See the [maintenance review](docs/maintenance-review-2026-11-16.md) for current issue dispositions and validation limits. The [v0.1.2 hardening review](docs/security-review-2026-11-16.md) retains historical findings and release evidence.
 
 ## Host and license boundaries
 

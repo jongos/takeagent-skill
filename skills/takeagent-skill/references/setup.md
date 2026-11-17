@@ -48,7 +48,7 @@ Use HTTP MCP with JSON responses, OAuth authorization-code/S256 PKCE, resource b
 
 After connection, initialize, discover tools and call account.access. For a deliberate connection test, use a small fictional review without private data; do not run finance.review automatically just to initialize the skill. Revocation is managed at https://takeagent.ai/account. After 401, clear stale account rights and give task-specific OAuth reconnection guidance even when login_reminder_sent is true, without repeating the canned login reminder. A website login alone does not connect the assistant. After generic 403 explain the actual access/scope failure without inferring Free; only an explicit authenticated plan restriction supports the one-time EP suggestion; after 429 stop until retry is permitted. Do not repeatedly retry or substitute credentials.
 
-Platform instructions were researched November 16, 2026. Named-client end-to-end TakeAgent acceptance is not established by these instructions. Record client/version and actual results before calling it verified.
+Platform instructions were researched November 16, 2026. Revalidate paths and support URLs before each release and monthly while this guide is maintained; see docs/acceptance.md (Maintainer revalidation cadence). Named-client end-to-end TakeAgent acceptance is not established by these instructions. Record client/version and actual results before calling it verified.
 
 ## Host memory and enforcement
 

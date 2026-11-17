@@ -49,6 +49,12 @@ Named draft saves now use scoped consent and concurrency checks. Full direct par
 
 Grok consumer and Gemini consumer connected install paths require actual platform support and acceptance; developer/CLI support is not a substitute.
 
+## Maintainer revalidation cadence
+
+Before each release, and monthly while the setup guide is maintained, review every official support URL and installation path in references/setup.md. Record the review date, exact client/version, account/workspace eligibility and changed labels or steps. A successful HTTP response proves link availability only, not that installation or OAuth works. Do not mark a platform accepted without the synthetic client exercises above. If access is unavailable, record it as untested rather than advancing the researched date.
+
+Host behavior and named-client OAuth remain explicitly unverified release limitations (#22). Packaging tests are not a substitute. Keep the limitation visible in release notes until a real host test tier can run these cases. Do not use customer projects, production mutations or billing changes as fixtures.
+
 ## Public release
 
 Review the explicit package allowlist and all Git-tracked files. Publish this standalone repository only, never mirror the private application repository or its history. Include the ZIP and checksum as release assets. Do not label unresolved acceptance rows as passed.
