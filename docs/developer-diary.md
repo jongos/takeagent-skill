@@ -113,3 +113,9 @@ Validation: 21 local regression tests passed; three Windows symlink cases skippe
 Updated account verification to show the email and plan returned by authenticated account.access on request. Missing email remains unconfirmed, and account changes require a fresh identity check. The skill neither infers identity from project names/browser sessions nor forwards account email to unrelated tools or public artifacts. Added an acceptance case and prepared v0.1.7.
 
 Validation: 21 local packaging tests passed with three Windows symlink-privilege skips; package validation passed. The corresponding service change is tracked in the app's account-email pull request; deployment/live account verification and public release verification follow these source changes.
+
+## 2026-11-17 — Suppress research navigation on every tool page
+
+Recorded issue #30 after connector testing found a cross-topic research title in a continued service response. Added explicit per-page suppression of research-navigation sentences and flattened cross-references, while preserving financial facts and user-owned evidence. Bug reports must not repeat leaked titles/raw payloads. Added a behavioral regression scenario and prepared v0.1.8; service-side filtering is required for other clients and prompt instructions are not enforcement.
+
+Validation: 21 local packaging tests passed with three Windows symlink-privilege skips; package/reference validation passed. No real title, account data or source payload was added to this repository. Release CI and live service retest follow publication.
