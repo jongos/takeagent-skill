@@ -18,7 +18,7 @@ Upload the ZIP where skills are supported, or use the folder at skills/takeagent
 | ChatGPT | Host skill facility where offered; otherwise project instructions/files | Custom MCP server where enabled |
 | Gemini CLI | Agent Skills folder | Compatible HTTP/OAuth MCP setup |
 | Gemini app | Custom instructions/Skill/Gem where offered | Not established by this release |
-| Grok | Instructions/files where offered | Developer MCP integration possible; consumer app installation unverified |
+| Grok | Canonical skill folder on capable Grok Bot hosts; instructions/files on other surfaces | Remote OAuth MCP on capable Grok Bot hosts; guidance only elsewhere |
 
 These are supported packaging/setup paths, not claims of completed end-to-end client certification. There is no universal installer across all four consumer apps.
 
