@@ -89,3 +89,9 @@ Published v0.1.5 from bfcf3b3. Push CI 43893988586 passed all 24 tests without s
 Kept one canonical skill and added workbook discovery, minimal clarification, read-only defaults, cell references, hidden-content handling and a clear distinction between local host assistance and authenticated TakeAgent review. Clarified that website edit guidance refers to TakeAgent projects. Added Copilot installation guidance and pending workbook acceptance cases. Excel packaging belongs to takeagent-excel and consumes a pinned revision.
 
 Validation: 24 Python tests completed successfully (3 Windows symlink privilege skips); package allowlist/link/archive verification passed; version synchronization check passed; skill-creator quick validation passed. No new release/version, Copilot upload, live model acceptance or MCP compatibility claim.
+
+## 2026-11-17 — Fix workbook review failures from live Copilot tests
+
+Moved essential reconciliation, currency/scale, bridge linkage, native-cell citation and hidden-content boundaries into the canonical entrypoint so they apply even without loading reference files. Added a concrete total-versus-payment example and regression acceptance cases. Local host assistance remains read-only and separate from authenticated service review. No forked Excel skill was created.
+
+Validation: 24 Python tests succeeded with three Windows symlink privilege skips; canonical archive/link checks and version synchronization passed. Skill validation passed with Python UTF-8 mode (the validator's default Windows encoding could not read curly quotes). Live reinstallation and model retests follow this commit; text changes do not establish host compliance or hidden-data confidentiality.

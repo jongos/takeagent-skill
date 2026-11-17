@@ -61,3 +61,11 @@ Review the explicit package allowlist and all Git-tracked files. Publish this st
 - Ask for review only: no workbook changes. Explicit edits remain host-authorized and use a bounded preview and input recheck.
 - Request a connected review without tools: do not invent tool execution; offer local assistance. With tools, validate schema, access and bounded transmission first.
 - Run explicit @mention and automatic recognition in Copilot in Excel; record client version, account, reference navigation, clarification count and outcome. Package validation alone does not pass these cases.
+
+## Windows regression cases after 2026-11-17 live failures
+
+- Total budget 1M plus included day-one spend 700K: cost remains 1M. With inclusion unclear, ask or qualify; never silently conclude 1.7M.
+- Header Amount, no currency/scale, unspecified bridge link: provisional figures use units, no dollar sign, ask currency/scale and bridge repayment source; net coverage unresolved and no connected finance submission.
+- Hidden synthetic funding: never repeat its value; distinguish calculation exclusion from whether the host has already read it. A labelled exclusion alone is not proof of hidden-state filtering.
+- Findings cite minimal native cells without local/temp paths. Click a cell reference to verify navigation on the target host.
+- Run both explicit invocation and natural request in fresh chats; inspect execution record. Test cases are pending until actually observed, not passed by textual validation.
