@@ -15,7 +15,7 @@ Use runtime discovery as the contract. Optional inputs or newer response fields 
 | Temporary agent context | context.create/read when exposed for the current Agent Only connection |
 | Optional vendor report previews | skills.list, explicit installation preference, then supported inspect/preview tools |
 | Create or update a project | Workspace website; draft snapshots do not create projects or replace working rows |
-| Import CSV/TSV/XLSX or supported text PDF | Workspace's available import preview, review, then apply/save |
+| Import CSV/TSV/XLSX, MMB, Saturation or supported text PDF | Workspace import preview; map topsheet **taxonomyId**, reconcile control totals, then apply/save |
 | Plan Builder and revisions | Workspace review/apply flow; don't overwrite unsaved work |
 | Investors, risks and funding conditions | Read/review project fields; edit through Workspace |
 | Reports, project exports and assistance briefs | Workspace download controls |
@@ -41,6 +41,34 @@ When finance.review returns them, lead the interpretation with **readiness**, th
 
 Keep financing costs, collected cash, opening cash, scheduled receipts and collateral value distinct from economic coverage. A missing schedule means timing is unmapped, not risk-free. Budget deferrals may include an optional **linkedSourceId** tying the deferral to the funding row that carries it; mention it when explaining how deferred spend relates to sources.
 
+When **fundingReconciliation.allowanceUses** and **topsheetAllowances** are present, describe them as a breakdown of uses already embedded in the reconciled budget picture—they are explanatory, not extra funding to add on top. Use them to answer “where did contingency/bond/insurance land?” without double-counting those lines against the gap.
+
+### Source sizing ledger
+
+When **sourceSizing** is returned, treat it as a per-source ledger built from the user's source rows plus any optional sourceSizing assumption inputs—not from invented figures.
+
+For each source, explain in order:
+
+1. **Gross** — face amount as entered.
+2. **Net collectible** — after the user's deductions, discounts, fees or collection routes you can see in the payload.
+3. **Advanceable** — lendable or gap-collateral capacity after net collectible and any stated advance rate.
+
+When a rate or route is missing, ask the producer for the advance rate, discount, distributor or escrow collection path, and whether they want a low-case estimate for unsold territories or estimates. Do not substitute literal dollar amounts in examples—use placeholders such as `[MG net after commission]` or a cell reference.
+
+If a source used **exampleDefaultsLabel**, name that label once: the service applied labeled example advance defaults only because a rate was left blank. Present those defaults as configurable planning assumptions the producer can change—never as maximum advances, lender requirements, or reasons to refuse the plan.
+
+When plan totals include **loan-to-budget**, **collateral coverage**, or **gap concentration**, report them as planning metrics from the user's data. A **gap-concentration** review trigger is advisory—it prompts discussion of concentrated gap collateral; it does not decline or block the review.
+
+### Budget taxonomy and allowances
+
+Budget lines may carry **taxonomyId** for topsheet rollups. Allowed values include above-the-line, below-the-line, fringes, contingency, completion-bond, insurance, errors-omissions, completion-delivery, financing-cost, reserve, and unclassified.
+
+When **budgetTaxonomy** is returned, use it to summarize how the budget splits across those buckets. Tie allowance checks to taxonomy and to **budgetAssumptions** line selections (contingencyLineIds, bondLineIds, insuranceLineIds, errorsOmissionsLineIds)—empty arrays mean explicitly no lines selected, not “assumed zero.”
+
+**MMB** and **Saturation** imports map imported rows to **taxonomyId** when totals reconcile. When an import refuses unreconciled totals, list the **unmatched** rows the service returns and help the producer retag lines, fix control totals, or reconcile before re-importing—do not silently drop unmatched rows.
+
+When **allowance-category-unmapped** appears in findings, a required allowance (contingency, bond, insurance, E&O, or similar) has no mapped taxonomy lines and no selected budgetAssumptions lines. Fix by assigning **taxonomyId** on the right budget rows and/or selecting those line IDs in budgetAssumptions; explain which bucket is missing without inventing amounts.
+
 ### Double-count findings
 
 When **fundingReconciliation.doubleCountFindings[]** is non-empty, name each finding in plain language and give one fix. Each item has `code`, `detail`, `refs[]`, and optional `timingOnly`.
@@ -52,6 +80,20 @@ When **fundingReconciliation.doubleCountFindings[]** is non-empty, name each fin
 | `deferral-source-overlap` | Deferred budget and a funding source both count the same economic capacity. | Link the deferral to its source (`linkedSourceId` / deferral linkage) or adjust rows so the deferral and source are not independent cover. |
 
 Use `refs[]` and user cell references when available; do not invent amounts in the explanation.
+
+### Advisory findings
+
+Beyond double-count codes, **findings[]** may include advisory items that flag data-quality or assumption issues. They inform the producer; they do not decline financing or replace underwriting.
+
+| Code | What it means | How to help |
+|---|---|---|
+| `incentive-face-or-route` | Tax incentive face amount or qualifying spend route needs clarification versus the budget or program rules. | Confirm program label, qualifying lines, and whether face follows spend or a separate certificate path. |
+| `presale-entity-territory` | Presale or MG rows need entity, territory, or split clarity. | Enter territory splits, buyer entity, and which rows carry committed vs estimated status. |
+| `estimate-as-contracted` | A sales estimate or territory is treated like contracted capacity without matching evidence or status. | Align source **status**, evidence, and territory **take** with what is actually signed or still estimated. |
+| `Section-181-assumption` | Section 181 or similar incentive timing/qualification rests on stated assumptions. | Confirm spend dates, qualifying categories, and that the user intended the modeled assumption—do not assert eligibility. |
+| `allowance-category-unmapped` | A required topsheet allowance has no taxonomy-mapped or selected budget lines. | Tag budget lines with the right **taxonomyId** and/or select them in **budgetAssumptions**. |
+
+Name the finding, cite refs when present, and give one practical next edit.
 
 ### Scenarios
 
