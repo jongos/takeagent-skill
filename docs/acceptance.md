@@ -54,6 +54,11 @@ Status: public instruction package. No production service changes are included. 
 43. MMB or Saturation import with unreconciled total: refuse silently completing import; surface unmatched rows and retag/reconcile guidance.
 44. Advisory findings (incentive-face-or-route, presale entity/territory, estimate-as-contracted, Section 181 assumption): explain issue and one fix; never present as decline or guaranteed ineligibility.
 45. Gap-concentration review trigger: advisory prompt for concentrated gap collateral only; does not decline the plan.
+46. finance.review returns cashFlowTiming: explain gross proceeds, net proceeds after user-entered deductions, and cash available to production; cite shortfallFindings with refs; state that a dated timing shortfall can coexist with reconciled funding.
+47. User-entered debt fields present: respect interestBasis (annual-rate vs fixed-charge not annualized), interestTreatment, interestReserve without double-withholding; do not invent rates, reserve months or default fees.
+48. Scenario with defaultBps, fxHaircutBps or receiptDelayDays: use reconciled-economic-funding plus sourceSizing and cashFlowTiming when returned; read shockApplication for shocked vs skipped sources (FX only where territory is entered); report unavailable timing when bounds block evaluation.
+49. Completion-bond or bond allowance in topsheetAllowances: describe as embedded budget use only; never as early cash or extra funding in cashFlowTiming.
+50. Cost export preview with taxonomyCrossWalk: separate confirmed user links from suggested mappings; list unmapped rows; refuse non-reconciling totals when a control total exists; report no-control-total when absent; never headline a funding gap from export adapters.
 
 Run OAuth acceptance separately in each named client: consent with intended identity, discovery, account.access, synthetic finance.review, owner isolation, refresh, revoke and denied subsequent call. Record date, client/version and outcomes without tokens or customer content.
 

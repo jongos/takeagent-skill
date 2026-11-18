@@ -95,8 +95,31 @@ class ReleaseTests(unittest.TestCase):
             sync.synchronize(self.root, check=True)
         self.assertEqual(sync.synchronize(self.root), "v0.1.3")
         self.assertEqual(sync.synchronize(self.root, check=True), "v0.1.3")
-        self.assertIn("/v0.1.3/", (self.root / "README.md").read_text())
+        readme = (self.root / "README.md").read_text()
+        self.assertIn(sync.LATEST_DOWNLOAD, readme)
+        self.assertIn(sync.LATEST_RELEASE, readme)
+        self.assertNotIn("/v0.1.3/", readme)
         self.assertIn("TAKEAGENT SKILL · v0.1.3", (self.root / "docs/index.html").read_text())
+
+    def test_readme_versioned_release_urls_fail_check(self):
+        readme = (
+            self.base
+            + "download/v0.1.3/takeagent-skill.zip) · [Release notes]("
+            + self.base
+            + "tag/v0.1.3)"
+        )
+        (self.root / "README.md").write_text(readme)
+        landing = (
+            "TAKEAGENT SKILL · v0.1.3 "
+            + sync.LATEST_DOWNLOAD
+            + " "
+            + sync.LATEST_RELEASE
+            + " "
+            + sync.LATEST_DOWNLOAD
+        )
+        (self.root / "docs/index.html").write_text(landing, encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "stale: README"):
+            sync.synchronize(self.root, check=True)
 
     def test_pinned_landing_release_urls_are_rejected(self):
         pinned = (
@@ -106,10 +129,10 @@ class ReleaseTests(unittest.TestCase):
         )
         (self.root / "docs/index.html").write_text(pinned, encoding="utf-8")
         readme = (
-            self.base
-            + "download/v0.1.3/takeagent-skill.zip) · [Release notes]("
-            + self.base
-            + "tag/v0.1.3)"
+            sync.LATEST_DOWNLOAD
+            + ") · [Release notes]("
+            + sync.LATEST_RELEASE
+            + ")"
         )
         (self.root / "README.md").write_text(readme)
         with self.assertRaisesRegex(ValueError, "latest-release download URL"):

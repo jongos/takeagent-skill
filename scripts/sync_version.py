@@ -28,18 +28,38 @@ def landing_download_links(html):
     if issues:
         raise ValueError("; ".join(issues))
 
-def synchronize_readme(path, tag, check):
-    original = path.read_text(encoding="utf-8")
-    updated, count = re.subn(
-        r"(https://github\.com/jongos/takeagent-skill/releases/(?:download|tag)/)v\d+\.\d+\.\d+",
-        lambda match: match.group(1) + tag,
-        original,
+def readme_release_links(text):
+    issues = []
+    if text.count(LATEST_DOWNLOAD) != 1:
+        issues.append("README must use the latest-release download URL once")
+    if LATEST_RELEASE not in text:
+        issues.append("README must link to releases/latest for release notes")
+    if VERSIONED_RELEASE_LINK.search(text):
+        issues.append("README must not pin versioned release URLs")
+    if issues:
+        raise ValueError("; ".join(issues))
+
+def repair_readme_release_links(text):
+    text = re.sub(
+        r"https://github\.com/jongos/takeagent-skill/releases/download/v\d+\.\d+\.\d+/takeagent-skill\.zip",
+        LATEST_DOWNLOAD,
+        text,
     )
-    if count < 2:
-        raise ValueError("README must contain versioned release download and tag links")
-    if updated != original:
+    return re.sub(
+        r"https://github\.com/jongos/takeagent-skill/releases/tag/v\d+\.\d+\.\d+",
+        LATEST_RELEASE,
+        text,
+    )
+
+def synchronize_readme(path, check):
+    original = path.read_text(encoding="utf-8")
+    try:
+        readme_release_links(original)
+    except ValueError as error:
         if check:
-            raise ValueError("Version links are stale: README.md")
+            raise ValueError("Version links are stale: README.md") from error
+        updated = repair_readme_release_links(original)
+        readme_release_links(updated)
         path.write_text(updated, encoding="utf-8", newline="\n")
         return "README.md"
     return None
@@ -63,7 +83,7 @@ def synchronize(root=ROOT, check=False):
     changed = [
         name
         for name in (
-            synchronize_readme(root / "README.md", tag, check),
+            synchronize_readme(root / "README.md", check),
             synchronize_landing(root / "docs/index.html", tag, check),
         )
         if name
