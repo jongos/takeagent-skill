@@ -130,7 +130,7 @@ When **budgetTaxonomy** is returned, use it to summarize how the budget splits a
 
 **MMB** and **Saturation** imports map imported rows to **taxonomyId** when totals reconcile. When an import refuses unreconciled totals, list the **unmatched** rows the service returns and help the producer retag lines, fix control totals, or reconcile before re-importing—do not silently drop unmatched rows.
 
-When **allowance-category-unmapped** appears in findings, an allowance the user entered could not be mapped to a topsheet category: it has no mapped taxonomy lines and no selected **budgetAssumptions** lines. Examples include contingency, insurance, E&O, or an optional completion bond when the user budgeted one. Fix by assigning **taxonomyId** on the right budget rows and/or selecting those line IDs in **budgetAssumptions**; explain which entered allowance bucket could not be mapped without inventing amounts. Never imply a completion bond is mandatory or “missing” when the user did not enter one.
+When **allowance-category-unmapped** appears in findings, the user's planning assumptions call for a contingency or completion bond, but no budget lines are mapped to that category or selected in **budgetAssumptions**. TakeAgent raises it in exactly two cases: (1) **budgetAssumptions** sets **contingencyBps** above zero but no contingency lines carry contingency **taxonomyId** or **contingencyLineIds** selections; (2) bond planning is active—the user marked a bond required, selected **bondLineIds**, or budgeted a completion-bond line—but no bond lines are taxonomy-mapped or selected in **budgetAssumptions**. Insurance and E&O never trigger this finding. Fix by assigning **taxonomyId** on the right budget rows and/or selecting those line IDs in **budgetAssumptions**; explain which assumption lacks mapped lines without inventing amounts. Never imply a completion bond is mandatory or “missing” when the user did not plan for one.
 
 ### Double-count findings
 
@@ -154,7 +154,7 @@ Beyond double-count codes, **findings[]** may include advisory items that flag d
 | `presale-entity-territory` | Presale or MG rows need entity, territory, or split clarity. | Enter territory splits, buyer entity, and which rows carry committed vs estimated status. |
 | `estimate-as-contracted` | A sales estimate or territory is treated like contracted capacity without matching evidence or status. | Align source **status**, evidence, and territory **take** with what is actually signed or still estimated. |
 | `Section-181-assumption` | Section 181 or similar incentive timing/qualification rests on stated assumptions. | Confirm spend dates, qualifying categories, and that the user intended the modeled assumption—do not assert eligibility. |
-| `allowance-category-unmapped` | An allowance the user entered could not be mapped to a topsheet category (contingency, insurance, E&O, or an optional completion bond when budgeted). | Tag budget lines with the right **taxonomyId** and/or select them in **budgetAssumptions**. |
+| `allowance-category-unmapped` | Planning calls for contingency (**contingencyBps** above zero) or a completion bond the user chose to plan for (bond required, **bondLineIds**, or a budgeted completion-bond line), but no budget lines are mapped to that category or selected in **budgetAssumptions**. Not raised for insurance or E&O. | Tag budget lines with the right **taxonomyId** and/or select them in **budgetAssumptions**. |
 
 Name the finding, cite refs when present, and give one practical next edit.
 
