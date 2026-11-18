@@ -9,7 +9,7 @@ Use runtime discovery as the contract. Optional inputs or newer response fields 
 | Find and read projects | projects.list and projects.read when exposed |
 | Budget and funding review | finance.review with user-supplied or authorized project |
 | Scenarios and cash timing | finance.review with the advertised scenario and schedule fields |
-| Debt, repayment, collateral and bridge review | finance.review where its live schema exposes those inputs |
+| Debt, mezzanine, equity links, lender checklist and waterfall review | finance.review where its live schema exposes those inputs |
 | Compare saved plan versions | plans.compare when exposed; website for working-plan capture/apply |
 | Save a named proposed plan | plans.saveDraft with user authorization and projects:write consent |
 | Temporary agent context | context.create/read when exposed for the current Agent Only connection |
@@ -33,21 +33,25 @@ Producers are assembling plans. Answer against the reconciled picture and next p
 
 For a saved project, preserve IDs, current version and captured history. For ephemeral fictional examples, label them and use valid schema-required IDs. Empty arrays mean explicitly absent rows, not missing evidence. Do not truncate a large project silently to pass a limit.
 
+### Deficit vs gap (terminology)
+
+In answers, call a budget-versus-sources shortfall a **deficit**—whether projected, committed, or reconciled economic coverage. Reserve **gap** for gap financing against unsold sales estimates (**gapCollateral**, gap-concentration review triggers, and similar collateral mechanics). JSON may still expose legacy names such as **projectedGap** or **committedGap**; in prose, say those fields hold the **deficit** amount (minor currency units), not “gap funding.”
+
 ### Readiness and fundingReconciliation
 
-When finance.review returns them, lead the interpretation with **readiness**, then **fundingReconciliation** as the single headline for whether the plan covers the budget on an economic (non-double-counted) basis. State the reconciled gap or surplus in producer language before cash timing.
+When finance.review returns them, lead the interpretation with **readiness**, then **fundingReconciliation** as the single headline for whether the plan covers the budget on an economic (non-double-counted) basis. State the reconciled deficit or surplus in producer language before cash timing. **readiness** is advisory planning progress only—TakeAgent never approves, prices, or declines financing.
 
-**grossSourceCoverage**, when present, is diagnostic only: it shows how entered sources sum before reconciliation. Do not report gross totals as the funding gap, headline surplus, or scenario outcome unless the user explicitly asks for gross-source diagnostics.
+**grossSourceCoverage**, when present, is diagnostic only: it shows how entered sources sum before reconciliation. Do not report gross totals as the headline deficit, headline surplus, or scenario outcome unless the user explicitly asks for gross-source diagnostics.
 
 Keep financing costs, collected cash, opening cash, scheduled receipts and collateral value distinct from economic coverage. A missing schedule means timing is unmapped, not risk-free. Budget deferrals may include an optional **linkedSourceId** tying the deferral to the funding row that carries it; mention it when explaining how deferred spend relates to sources.
 
-When **fundingReconciliation.allowanceUses** and **topsheetAllowances** are present, describe them as a breakdown of uses already embedded in the reconciled budget picture—they are explanatory, not extra funding to add on top. Use them to answer “where did contingency/bond/insurance land?” without double-counting those lines against the gap.
+When **fundingReconciliation.allowanceUses** and **topsheetAllowances** are present, describe them as a breakdown of uses already embedded in the reconciled budget picture—they are explanatory, not extra funding to add on top. Use them to answer “where did contingency/bond/insurance land?” without double-counting those lines against the deficit.
 
-**Completion-bond** (and similar bond) allowance rows are budget **uses** only. They explain where bond premium or fee lands in the reconciled budget. They do not advance cash, create collectible proceeds, or pull liquidity earlier in **cashFlowTiming**. Never treat bond allowance lines as a funding source or early cash event.
+**Completion bonds are optional.** Never flag a “missing” completion bond or treat bond allowance mapping as a requirement. Discuss bond scope, premium, or coverage only when the user entered a bond source or line, budgeted a bond allowance, or their financier explicitly requires one. When present, completion-bond allowance rows are budget **uses** only—they explain where premium or fee lands in the reconciled budget. They do not advance cash, create collectible proceeds, or pull liquidity earlier in **cashFlowTiming**. Never treat bond allowance lines as a funding source or early cash event.
 
 ### Cash flow timing
 
-**cashFlowTiming** is separate from **fundingReconciliation**. Economic gap or surplus answers whether sources cover the budget on a reconciled basis; timing answers when cash and production liquidity land.
+**cashFlowTiming** is separate from **fundingReconciliation**. Economic deficit or surplus answers whether sources cover the budget on a reconciled basis; timing answers when cash and production liquidity land.
 
 When **cashFlowTiming** is returned, distinguish three measures the service reports (names follow the live schema):
 
@@ -55,7 +59,7 @@ When **cashFlowTiming** is returned, distinguish three measures the service repo
 2. **Net proceeds** — after those user-entered deductions (interest, fees, **interestReserve**, and related rows the producer supplied). Nothing is invented when a field is blank.
 3. **Cash available to production** — what the schedule treats as spendable for production after net proceeds and any user-modeled treatment that withholds cash from the production pool (for example capitalized interest reported outside production cash).
 
-Walk **shortfallFindings[]** in date order when present. Each item should cite **refs[]** (and sheet/cell references when the user mapped them). A timing shortfall on a given date is not the same as a reconciled funding gap: funding can reconcile while a dated cash shortfall still appears because receipts land after spend or because net proceeds are smaller than gross. State both conclusions when the payload supports them, without conflating economic coverage with liquidity by date.
+Walk **shortfallFindings[]** in date order when present. Each item should cite **refs[]** (and sheet/cell references when the user mapped them). A timing shortfall on a given date is not the same as a reconciled economic deficit: funding can reconcile while a dated cash shortfall still appears because receipts land after spend or because net proceeds are smaller than gross. State both conclusions when the payload supports them, without conflating economic coverage with liquidity by date.
 
 ### Optional debt and interest fields
 
@@ -85,6 +89,34 @@ When a rate or route is missing, ask the producer for the advance rate, discount
 If a source used **exampleDefaultsLabel**, name that label once: the service applied labeled example advance defaults only because a rate was left blank. Present those defaults as configurable planning assumptions the producer can change—never as maximum advances, lender requirements, or reasons to refuse the plan.
 
 When plan totals include **loan-to-budget**, **collateral coverage**, or **gap concentration**, report them as planning metrics from the user's data. A **gap-concentration** review trigger is advisory—it prompts discussion of concentrated gap collateral; it does not decline or block the review.
+
+### Mezzanine, equity links and capital-structure rows
+
+When the live schema exposes them, treat **Mezzanine** as its own funding source **type**, distinct from **Debt**—different sizing, junior lien, and intercreditor rules apply even when face amounts look similar.
+
+Optional rows and links producers may enter:
+
+- **investors[]** may include **linkedEquitySourceId**, tying a tracked investor row to an equity **sources[]** row for reporting and waterfall placement.
+- **lenderNeedsChecklist** (when present) lists lender-side items the producer checked off—**CAMA** control and **deposit-account control** are separate checklist items; never infer either from other fields. A **completion bond** line on the checklist is optional like any other item—not a default requirement.
+- **equityTerms** and **mezzanineTerms** carry structural detail such as **juniorToSourceIds** (which senior sources sit ahead) and intercreditor status fields the schema exposes—report what the user entered; do not invent subordination.
+- **waterfallPlacements** describe order-of-payment positions for modeling; they are illustrative until backed by deal documents.
+
+Empty arrays mean explicitly absent rows, not “assumed complete.”
+
+### lenderEquityNeeds
+
+When **finance.review** returns **lenderEquityNeeds**, summarize it after **readiness** and **fundingReconciliation** unless the user asked specifically for lender, equity, or waterfall detail—then lead with the requested slice.
+
+Walk these blocks when present:
+
+1. **Lender unbundling** — gross loan commitment; withheld interest, fees, and reserves **de-duplicated** against source **deductions** and debt-term rows (do not describe the same withholding twice); **net lender cash** to production; **withheldBasis** explaining what each holdback represents.
+2. **Checklist** — reflect **lenderNeedsChecklist** items the user marked; do not add CAMA, deposit control, or bond items they did not enter.
+3. **bondCoverage** — discuss only when a completion bond is entered on a source/line, budgeted in allowances, or the user asks about bond scope; omit bond coverage talk when no bond exists in the plan.
+4. **Investor–equity links** — map **investors[]** to **linkedEquitySourceId** targets and note missing links only when the user cares about equity attribution.
+5. **Mezzanine intercreditor checklist** — junior/mezz items from **mezzanineTerms** and related findings; one practical next edit per open item in the user's own rows.
+6. **Illustrative waterfall** — walk **waterfallPlacements** in order with the deal-documents caveat: **sales estimates** and unsold territories appear only when placed in the waterfall payload—do not treat estimates as collected cash.
+
+This block informs packaging and term-sheet planning; it does not approve, price, underwrite, or decline.
 
 ### Budget taxonomy and allowances
 
@@ -141,7 +173,7 @@ For validation errors, explain the field and ask for the missing fact or repair 
 ## Useful starting requests
 
 - "Explain pre-sales without connecting an account."
-- "Check my TakeAgent access and review my selected project's funding gap."
+- "Check my TakeAgent access and review my selected project's funding deficit."
 - "Compare these hypothetical budget and timing assumptions."
 - "Help me import my budget and review the preview before saving."
 - "Prepare changes to my financing plan, then help me apply them in TakeAgent."
@@ -170,7 +202,7 @@ A review request does not authorize workbook edits. When the user requests an ed
 
 ### Reconciliation before conclusions
 
-Classify rows by economic role using headings, formulas and labels before calculating. Reconcile a stated total against its component rows; do not sum both. Reconcile a spend schedule against the same cost base instead of treating dated payments as new expenses. For example, a 1,000,000 budget with 700,000 due on day one still has 1,000,000 total cost when the payment is included; 600,000 available on day one leaves a 100,000 timing gap, not a 700,000 increase in cost. If inclusion is genuinely ambiguous, ask whether that payment is within the budget and avoid a definitive overall gap.
+Classify rows by economic role using headings, formulas and labels before calculating. Reconcile a stated total against its component rows; do not sum both. Reconcile a spend schedule against the same cost base instead of treating dated payments as new expenses. For example, a 1,000,000 budget with 700,000 due on day one still has 1,000,000 total cost when the payment is included; 600,000 available on day one leaves a 100,000 timing shortfall, not a 700,000 increase in cost. If inclusion is genuinely ambiguous, ask whether that payment is within the budget and avoid a definitive overall deficit.
 
 Keep commitment, collection and eligibility distinct. Compare the reconciled budget with fundingReconciliation-style economic coverage (not a gross source total), and separately compare scheduled uses with dated cash. If the bridge repayment source is unknown, show gross listed financing as diagnostic only, explain that reconciled coverage depends on linkage, and ask which receivable or other source repays it. Missing currency or scale prevents a service submission, not useful provisional arithmetic in explicitly unspecified units.
 
@@ -201,7 +233,7 @@ When **taxonomyCrossWalk** is returned, separate:
 - **Confirmed** mappings — only links the user explicitly established.
 - **Suggested** mappings — advisory pairings; label them as suggestions, not applied budget rows.
 
-List **unmapped** export rows the service cannot place in the topsheet taxonomy. Refuse to present rolled-up totals that do not reconcile against an export control total when the file provides one; when no control total exists, report **no-control-total** rather than inventing a check. Export and crosswalk adapters summarize and map rows; they **never** compute a funding gap or replace **fundingReconciliation**.
+List **unmapped** export rows the service cannot place in the topsheet taxonomy. Refuse to present rolled-up totals that do not reconcile against an export control total when the file provides one; when no control total exists, report **no-control-total** rather than inventing a check. Export and crosswalk adapters summarize and map rows; they **never** compute an economic deficit or replace **fundingReconciliation**.
 - **skills.preview:** use the discovered structured-report contract when required, including Wrapbook. Its actuals must be cumulative and commitments remaining-unpaid-only; CSV requires the full cost-column set, detail rows and final total. Other vendors should use inspectFile/previewFile where available. Never fabricate review confirmations or request vendor credentials.
 
 Keep project evidence and required user attestations separate from private research provenance. Apply the main skill's concise response and non-disclosure rules to every result.

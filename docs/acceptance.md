@@ -39,8 +39,8 @@ Status: public instruction package. No production service changes are included. 
 29. Ordinary finance question: practical answer first, normally 80-180 words or less for a simple question; no boilerplate disclaimer, memo or metric inventory. Requested detail remains available.
 30. Missing collection date changes cash availability: state that condition once where relevant and give the answer under an explicit assumption. Do not remove a consequential condition for brevity or add unrelated caveats.
 
-31. finance.review returns readiness and fundingReconciliation: lead with those fields; state economic gap or surplus from fundingReconciliation, not from grossSourceCoverage.
-32. grossSourceCoverage present alongside fundingReconciliation: mention gross only as entry-level diagnostic when useful; never as the headline funding gap.
+31. finance.review returns readiness and fundingReconciliation: lead with those fields; state economic deficit or surplus from fundingReconciliation, not from grossSourceCoverage; readiness is advisory only (no approve/price/decline).
+32. grossSourceCoverage present alongside fundingReconciliation: mention gross only as entry-level diagnostic when useful; never as the headline deficit.
 33. doubleCountFindings includes linked-bridge-receivable with timingOnly: explain timing vs double coverage; suggest bridge linkage or treating overlap as timing—not extra economic funding.
 34. doubleCountFindings includes territory-presale-overlap: explain MG/presale territory clash; direct user to enter a territory split.
 35. doubleCountFindings includes deferral-source-overlap: explain deferral and source overlap; direct user to link the deferral (linkedSourceId) or adjust rows.
@@ -49,7 +49,7 @@ Status: public instruction package. No production service changes are included. 
 38. Worked example in chat: cite cell references or placeholders only; no invented literal dollar amounts unless supplied by the user.
 39. finance.review returns sourceSizing: per-source gross, net collectible and advanceable from user rows; ask for missing advance rates, discounts, routes or low-case estimates instead of inventing figures.
 40. sourceSizing includes exampleDefaultsLabel: state once that labeled example defaults filled blank rates only; describe them as configurable planning assumptions, not lender caps or requirements.
-41. fundingReconciliation includes allowanceUses or topsheetAllowances: explain embedded uses already counted in reconciliation; do not add them again to the economic gap.
+41. fundingReconciliation includes allowanceUses or topsheetAllowances: explain embedded uses already counted in reconciliation; do not add them again to the economic deficit.
 42. budgetTaxonomy or taxonomyId on lines: summarize topsheet buckets; allowance-category-unmapped directs user to tag lines and/or select budgetAssumptions line IDs—never treat unmapped allowance as zero.
 43. MMB or Saturation import with unreconciled total: refuse silently completing import; surface unmatched rows and retag/reconcile guidance.
 44. Advisory findings (incentive-face-or-route, presale entity/territory, estimate-as-contracted, Section 181 assumption): explain issue and one fix; never present as decline or guaranteed ineligibility.
@@ -58,7 +58,13 @@ Status: public instruction package. No production service changes are included. 
 47. User-entered debt fields present: respect interestBasis (annual-rate vs fixed-charge not annualized), interestTreatment, interestReserve without double-withholding; do not invent rates, reserve months or default fees.
 48. Scenario with defaultBps, fxHaircutBps or receiptDelayDays: use reconciled-economic-funding plus sourceSizing and cashFlowTiming when returned; read shockApplication for shocked vs skipped sources (FX only where territory is entered); report unavailable timing when bounds block evaluation.
 49. Completion-bond or bond allowance in topsheetAllowances: describe as embedded budget use only; never as early cash or extra funding in cashFlowTiming.
-50. Cost export preview with taxonomyCrossWalk: separate confirmed user links from suggested mappings; list unmapped rows; refuse non-reconciling totals when a control total exists; report no-control-total when absent; never headline a funding gap from export adapters.
+50. Cost export preview with taxonomyCrossWalk: separate confirmed user links from suggested mappings; list unmapped rows; refuse non-reconciling totals when a control total exists; report no-control-total when absent; never headline an economic deficit from export adapters.
+51. Prose describes budget-versus-sources shortfall as deficit (projected, committed, or reconciled); JSON names like projectedGap are explained as holding the deficit, not “gap funding.” Reserve “gap” for unsold sales / gap-collateral financing.
+52. finance.review returns lenderEquityNeeds: summarize lender unbundling (gross commitment, de-duplicated withholdings, net lender cash, withheldBasis), checklist items the user entered, investor linkedEquitySourceId links, mezzanine/intercreditor items, and waterfallPlacements with sales-estimate caveat—after readiness and fundingReconciliation unless the user asked for lender/equity detail first.
+53. Mezzanine source type present: treat as distinct from Debt in explanation; honor equityTerms, mezzanineTerms (juniorToSourceIds), and waterfallPlacements from user rows without inventing subordination.
+54. lenderNeedsChecklist: CAMA control and deposit-account control are separate items—never inferred from other fields; completion bond checklist item is optional like any other (no default bond requirement).
+55. No bond in plan: do not discuss bondCoverage or flag missing completion bond. Bond/bondCoverage only when user entered a bond, budgeted bond allowance, or asked about bond scope.
+56. bondCoverage present with bond entered: describe scope/coverage from returned payload; still do not treat bond as early cash in cashFlowTiming.
 
 Run OAuth acceptance separately in each named client: consent with intended identity, discovery, account.access, synthetic finance.review, owner isolation, refresh, revoke and denied subsequent call. Record date, client/version and outcomes without tokens or customer content.
 
