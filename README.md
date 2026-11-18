@@ -8,7 +8,7 @@ The skill checks the connected account and reminds signed-out users to log in, o
 
 ## Install
 
-**[Download takeagent-skill.zip](https://github.com/jongos/takeagent-skill/releases/download/v0.1.11/takeagent-skill.zip)** · [Release notes and checksum](https://github.com/jongos/takeagent-skill/releases/tag/v0.1.11) · **[Visit the landing page](https://jongos.github.io/takeagent-skill/)**
+**[Download takeagent-skill.zip](https://github.com/jongos/takeagent-skill/releases/download/v0.1.12/takeagent-skill.zip)** · [Release notes and checksum](https://github.com/jongos/takeagent-skill/releases/tag/v0.1.12) · **[Visit the landing page](https://jongos.github.io/takeagent-skill/)**
 
 Upload the ZIP where skills are supported, or use the folder at skills/takeagent-skill. See [platform setup](skills/takeagent-skill/references/setup.md) for Claude, ChatGPT, Gemini and Grok.
 
@@ -24,7 +24,7 @@ These are supported packaging/setup paths, not claims of completed end-to-end cl
 
 ## What it covers
 
-Film-finance education, account checks, project discovery, budget/funding review, scenarios, cash timing, debt and collateral review, saved-version interpretation, investor/risk workflows, imports, Plan Builder, exports, and account management. Discovered tools can also compare/save named draft plans, handle eligible temporary context, and preview optional vendor reports under explicit consent. Website workflows handle working-project edits and features not exposed as tools. See [coverage](skills/takeagent-skill/references/workflows.md).
+Film-finance education, account checks, project discovery, budget/funding review, scenarios (including timing shocks), cash-flow timing and debt-interest inputs, collateral review, vendor cost-export previews and taxonomy crosswalk, saved-version interpretation, investor/risk workflows, imports, Plan Builder, exports, and account management. Discovered tools can also compare/save named draft plans, handle eligible temporary context, and preview optional vendor reports under explicit consent. Website workflows handle working-project edits and features not exposed as tools. See [coverage](skills/takeagent-skill/references/workflows.md).
 
 ## Current limitations
 

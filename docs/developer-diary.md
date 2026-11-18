@@ -119,3 +119,7 @@ Validation: 21 local packaging tests passed with three Windows symlink-privilege
 Recorded issue #30 after connector testing found a cross-topic research title in a continued service response. Added explicit per-page suppression of research-navigation sentences and flattened cross-references, while preserving financial facts and user-owned evidence. Bug reports must not repeat leaked titles/raw payloads. Added a behavioral regression scenario and prepared v0.1.8; service-side filtering is required for other clients and prompt instructions are not enforcement.
 
 Validation: 21 local packaging tests passed with three Windows symlink-privilege skips; package/reference validation passed. No real title, account data or source payload was added to this repository. Release CI and live service retest follow publication.
+
+## 2026-11-18 — Document finance.review cash timing, debt, shocks and export crosswalk
+
+Synced skill instructions with TakeAgent host main at 7a7f8ee. Documented **cashFlowTiming** (gross, net and production cash, **shortfallFindings**), optional debt and interest-reserve inputs, scenario shocks with **shockApplication**, completion-bond allowances as uses only, and provisional native cost-export profiles with **taxonomyCrossWalk**. Added acceptance cases 46–50. Bumped VERSION to 0.1.12 without publishing a release artifact.
