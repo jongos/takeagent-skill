@@ -12,7 +12,7 @@ import yaml
 from markdown_it import MarkdownIt
 
 ROOT = Path(__file__).resolve().parents[1]
-FILES = ("SKILL.md", "references/setup.md", "references/workflows.md")
+FILES = ("SKILL.md", "references/setup.md", "references/workflows.md", "LICENSE")
 MAX_FILE_BYTES = 256 * 1024
 
 def checked_path(root, path):
@@ -89,7 +89,10 @@ def snapshot(root):
     skill = checked_path(root, Path(root) / "skills" / "takeagent-skill")
     content = {}
     for name in FILES:
-        path = checked_path(root, skill / name)
+        if name == "LICENSE":
+            path = checked_path(root, Path(root) / "LICENSE")
+        else:
+            path = checked_path(root, skill / name)
         if not path.is_file():
             raise ValueError(f"Missing package input: {name}")
         with path.open("rb") as source:

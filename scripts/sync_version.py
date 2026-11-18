@@ -47,7 +47,7 @@ def synchronize_readme(path, tag, check):
 def synchronize_landing(path, tag, check):
     original = path.read_text(encoding="utf-8")
     landing_download_links(original)
-    updated, badge_count = re.subn(r"OPEN SOURCE · v\d+\.\d+\.\d+", "OPEN SOURCE · " + tag, original)
+    updated, badge_count = re.subn(r"TAKEAGENT SKILL · v\d+\.\d+\.\d+", "TAKEAGENT SKILL · " + tag, original)
     if badge_count != 1:
         raise ValueError("Expected one landing-page version badge")
     if updated != original:
