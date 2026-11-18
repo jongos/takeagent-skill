@@ -27,13 +27,35 @@ Use runtime discovery as the contract. Optional inputs or newer response fields 
 
 ## Review inputs and interpretation
 
-Ask only for missing inputs needed for the question. Never turn an estimate into a commitment or a commitment into a receipt. Evidence text alone does not verify execution. Use one stated currency per project; don't silently convert. USD 1,234.56 is 123456 minor units. 5 percent is 500 basis points where the schema uses bps. Do not assume unknown amounts are zero.
+Ask only for missing inputs needed for the question. Never turn an estimate into a commitment or a commitment into a receipt. Evidence text alone does not verify execution. Use one stated currency per project; don't silently convert. USD 1,234.56 is 123456 minor units. 5 percent is 500 basis points where the schema uses bps. Do not assume unknown amounts are zero. Quote only figures the user or an authorized project payload supplied; worked examples use sheet/cell references (for example `Funding!B12`) or neutral placeholders such as `[territory A MG]`, not invented dollar amounts. Run synthetic finance.review only when the user requests it.
+
+Producers are assembling plans. Answer against the reconciled picture and next practical edits; do not sermonize that planned sources are not yet committed unless that distinction changes the conclusion they asked about.
 
 For a saved project, preserve IDs, current version and captured history. For ephemeral fictional examples, label them and use valid schema-required IDs. Empty arrays mean explicitly absent rows, not missing evidence. Do not truncate a large project silently to pass a limit.
 
-Use fundingReconciliation, when returned, to distinguish economic coverage from gross entered-source totals. Linked bridge principal and the underlying receivable are not two independent funding sources. Keep financing costs, collected cash, opening cash, scheduled receipts and collateral value distinct. A missing schedule means timing is unmapped, not risk-free.
+### Readiness and fundingReconciliation
 
-Report hypothetical scenarios separately from the current plan. Saved-version totals should be interpreted using their captured rows and evaluation status, not blindly trusted cached totals. A not-evaluable version requires correction, not invented figures. finance.review does not save changes or call a lender approval process.
+When finance.review returns them, lead the interpretation with **readiness**, then **fundingReconciliation** as the single headline for whether the plan covers the budget on an economic (non-double-counted) basis. State the reconciled gap or surplus in producer language before cash timing.
+
+**grossSourceCoverage**, when present, is diagnostic only: it shows how entered sources sum before reconciliation. Do not report gross totals as the funding gap, headline surplus, or scenario outcome unless the user explicitly asks for gross-source diagnostics.
+
+Keep financing costs, collected cash, opening cash, scheduled receipts and collateral value distinct from economic coverage. A missing schedule means timing is unmapped, not risk-free. Budget deferrals may include an optional **linkedSourceId** tying the deferral to the funding row that carries it; mention it when explaining how deferred spend relates to sources.
+
+### Double-count findings
+
+When **fundingReconciliation.doubleCountFindings[]** is non-empty, name each finding in plain language and give one fix. Each item has `code`, `detail`, `refs[]`, and optional `timingOnly`.
+
+| Code | What it means | How to fix |
+|---|---|---|
+| `linked-bridge-receivable` | A bridge and the receivable it draws on were both counted as independent funding. Often **timing only** (`timingOnly: true`): the receivable is counted once economically—the issue is when cash lands, not duplicate coverage. | In TakeAgent, link the bridge to the receivable that repays it, or treat the overlap as a timing shift in the explanation—not as extra economic funding. |
+| `territory-presale-overlap` | A minimum guarantee and a presale both claim the same territory without a split. | Enter a territory split so MG and presale each carry an explicit share of that territory. |
+| `deferral-source-overlap` | Deferred budget and a funding source both count the same economic capacity. | Link the deferral to its source (`linkedSourceId` / deferral linkage) or adjust rows so the deferral and source are not independent cover. |
+
+Use `refs[]` and user cell references when available; do not invent amounts in the explanation.
+
+### Scenarios
+
+Hypothetical scenario results use basis **reconciled-economic-funding**—the same economic rules as the current plan. They may optionally include **grossSourceCoverage** for entry diagnostics; keep the reconciled scenario result primary. Report scenarios separately from the current plan. Saved-version totals should be interpreted using their captured rows and evaluation status, not blindly trusted cached totals. A not-evaluable version requires correction, not invented figures. finance.review does not save changes or call a lender approval process.
 
 For validation errors, explain the field and ask for the missing fact or repair an unambiguous formatting error. For unavailable data, state only the missing fact that affects the answer and proceed under a clear assumption where useful. Never fabricate a successful tool response, saved project, export, scheduled task or external connection.
 
@@ -59,7 +81,7 @@ Explicit action/target authorization is required for deletion, account changes, 
 
 For requests such as “review this financing plan,” infer the relevant visible table from the selection, headings and nearby labels using authorized host tools. Briefly identify the chosen scope; ask only if competing tables or ambiguous currency, units, status or bridge linkage would materially change the result. Reuse mappings while the workbook structure remains unchanged. Do not turn assumptions into facts.
 
-Default to read-only explanations and practical tips in chat. Use the host's calculation tools or formulas to check numbers, distinguish gross funding, net economic coverage and cash timing, and retain sheet/table/cell references alongside findings. A local calculation is not a finance.review result. If the host cannot read the workbook, request only the relevant range or small excerpt, not a whole-workbook export. Use visibility-aware extraction where supported. Exclude hidden or unrelated content from review, do not echo excluded values, and do not pass them to connected tools. Report limitations honestly: a native host may have already read those cells before applying the skill; arithmetic exclusion is not confidentiality.
+Default to read-only explanations and practical tips in chat. Use the host's calculation tools or formulas to check numbers; lead local conclusions from reconciled economic coverage, treat gross source roll-ups as diagnostic, and analyze cash timing separately. Retain sheet/table/cell references alongside findings. A local calculation is not a finance.review result. If the host cannot read the workbook, request only the relevant range or small excerpt, not a whole-workbook export. Use visibility-aware extraction where supported. Exclude hidden or unrelated content from review, do not echo excluded values, and do not pass them to connected tools. Report limitations honestly: a native host may have already read those cells before applying the skill; arithmetic exclusion is not confidentiality.
 
 For connected review, discover the real finance.review schema, validate the mapping and money units, and use only the bounded inputs authorized for transmission. Respect host consent and previously granted permissions; do not ask again merely to explain a prior result. Never silently truncate data or invent a connector because a skill mentions it. If the connector is unavailable, continue useful local assistance and explain the missing capability once.
 
@@ -71,7 +93,7 @@ A review request does not authorize workbook edits. When the user requests an ed
 
 Classify rows by economic role using headings, formulas and labels before calculating. Reconcile a stated total against its component rows; do not sum both. Reconcile a spend schedule against the same cost base instead of treating dated payments as new expenses. For example, a 1,000,000 budget with 700,000 due on day one still has 1,000,000 total cost when the payment is included; 600,000 available on day one leaves a 100,000 timing gap, not a 700,000 increase in cost. If inclusion is genuinely ambiguous, ask whether that payment is within the budget and avoid a definitive overall gap.
 
-Keep commitment, collection and eligibility distinct. Compare the reconciled budget with economic funding after bridge overlap, and separately compare scheduled uses with dated cash. If the bridge repayment source is unknown, show gross listed financing as gross only, explain that net coverage depends on the linkage, and ask which receivable or other source repays it. Missing currency or scale prevents a service submission, not useful provisional arithmetic in explicitly unspecified units.
+Keep commitment, collection and eligibility distinct. Compare the reconciled budget with fundingReconciliation-style economic coverage (not a gross source total), and separately compare scheduled uses with dated cash. If the bridge repayment source is unknown, show gross listed financing as diagnostic only, explain that reconciled coverage depends on linkage, and ask which receivable or other source repays it. Missing currency or scale prevents a service submission, not useful provisional arithmetic in explicitly unspecified units.
 
 A concise answer can contain two or three findings with native cell references, one next step, and at most two material clarification questions. Recheck the answer for double-counted totals, unstated currency, excluded values and raw file paths before sending. These checks are behavioral guidance; service validation and a visibility-aware adapter remain necessary for enforceable guarantees.
 
