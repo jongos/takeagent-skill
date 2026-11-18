@@ -18,7 +18,9 @@ Use runtime discovery as the contract. Optional inputs or newer response fields 
 | Import CSV/TSV/XLSX, MMB, Saturation or supported text PDF | Workspace import preview; map topsheet **taxonomyId**, reconcile control totals, then apply/save |
 | Plan Builder and revisions | Workspace review/apply flow; don't overwrite unsaved work |
 | Investors, risks and funding conditions | Read/review project fields; edit through Workspace |
-| Reports, project exports and assistance briefs | Workspace download controls |
+| Project dashboard and export report | Workspace dashboard (EP, Plus, Pro); not on Free or any Agent plan (Agent EP, Agent Plus, Agent Pro) |
+| Recoupment lifecycle and lifecycleChart scenario planner | Workspace dashboard (Plus, Pro only); absent from finance.review on Free, EP, and all Agent plans |
+| Reports, project exports and assistance briefs | Workspace download controls on eligible tiers |
 | Hosted assistant and project context | Workspace assistant, honoring its explicit sharing/saving settings |
 | Incentive or underwriting preparation | Available workspace preparation; no submission or approval |
 | Connected files | Only the currently enabled provider and explicitly selected files |
@@ -27,7 +29,7 @@ Use runtime discovery as the contract. Optional inputs or newer response fields 
 
 ## Review inputs and interpretation
 
-Ask only for missing inputs needed for the question. Never turn an estimate into a commitment or a commitment into a receipt. Evidence text alone does not verify execution. Use one stated currency per project; don't silently convert. USD 1,234.56 is 123456 minor units. 5 percent is 500 basis points where the schema uses bps. Do not assume unknown amounts are zero. Quote only figures the user or an authorized project payload supplied; worked examples use sheet/cell references (for example `Funding!B12`) or neutral placeholders such as `[territory A MG]`, not invented dollar amounts. Run synthetic finance.review only when the user requests it.
+Ask only for missing inputs needed for the question. Never turn an estimate into a commitment or a commitment into a receipt. Evidence text alone does not verify execution. Use one stated currency per project; don't silently convert. USD 1,234.56 is 123456 minor units. 5 percent is 500 basis points where the schema uses bps. Do not assume unknown amounts are zero. Quote only figures the user or an authorized project payload supplied; worked examples use sheet/cell references (for example `Funding!B12`) or neutral placeholders such as `[territory A MG]`, not invented dollar amounts. Label illustrative round figures explicitly. Display whole-dollar amounts without a trailing `.00`. Run synthetic finance.review only when the user requests it.
 
 Producers are assembling plans. Answer against the reconciled picture and next practical edits; do not sermonize that planned sources are not yet committed unless that distinction changes the conclusion they asked about.
 
@@ -39,7 +41,9 @@ In answers, call a budget-versus-sources shortfall a **deficit**—whether proje
 
 ### Readiness and fundingReconciliation
 
-When finance.review returns them, lead the interpretation with **readiness**, then **fundingReconciliation** as the single headline for whether the plan covers the budget on an economic (non-double-counted) basis. State the reconciled deficit or surplus in producer language before cash timing. **readiness** is advisory planning progress only—TakeAgent never approves, prices, or declines financing.
+When finance.review returns them, lead the interpretation with **readiness**, then **fundingReconciliation** as the single headline for whether the plan covers the budget on an economic (non-double-counted) basis.
+
+When **rebalanceSuggestions** is returned, treat each item as an advisory way to improve reconciled coverage—state the suggested adjustment, why the service surfaced it, and one edit the producer can make. Rebalance output is planning guidance; it does not approve, price, or decline financing. State the reconciled deficit or surplus in producer language before cash timing. **readiness** is advisory planning progress only—TakeAgent never approves, prices, or declines financing.
 
 **grossSourceCoverage**, when present, is diagnostic only: it shows how entered sources sum before reconciliation. Do not report gross totals as the headline deficit, headline surplus, or scenario outcome unless the user explicitly asks for gross-source diagnostics.
 
@@ -154,7 +158,32 @@ Beyond double-count codes, **findings[]** may include advisory items that flag d
 
 Name the finding, cite refs when present, and give one practical next edit.
 
-### Scenarios
+### Project dashboard, export report, and plan tiers
+
+The workspace **project dashboard** and downloadable **export report** are available on **EP, Plus, and Pro**. They are not on **Free** or any **Agent** plan (Agent EP, Agent Plus, Agent Pro). When a user on a lower tier asks for those surfaces, explain the tier requirement and link to membership—do not imply the assistant can render a dashboard view without the website.
+
+### Recoupment lifecycle (lifecycleChart)
+
+**lifecycleChart** and the recoupment lifecycle **scenario planner** are **Plus and Pro** features in the workspace. They do not appear in **finance.review** on **Free**, **EP**, or any **Agent** plan—do not invent lifecycle blocks when the payload omits them. For eligible accounts, summarize the chart in producer terms and offer the dashboard when browser assistance is appropriate.
+
+Built-in lifecycle **scenarios** (never call them forecasts) typically include:
+
+- Baseline receipts at **1.3×** production cost (illustrative multiplier—use the user's labeled scenario when returned).
+- **−30%** and **+30%** receipt stress versus that baseline.
+- Tax-credit collection **under expected** qualification.
+- A **custom** scenario the producer defines.
+
+For each **lifecycleChart.scenarios[]** entry, map producer-facing lines to JSON as follows:
+
+- **Owed** — **scenarios[].tiers[].contractedOwedMinor** (per waterfall tier).
+- **Collected** — **scenarios[].totalIllustrativeRevenueMinor** (illustrative receipts to the collection account under that scenario—not collected cash).
+- **Distributed** — **scenarios[].tiers[].allocatedMinor** (paid toward each tier in the scenario).
+
+Scenario receipts are **after exhibitor and distributor shares**. Off-the-top costs—sales-agent commission and expenses, collection-account fees, and residuals—are **not modelled yet**, so recoupment can read early. The service does **not** hold the producer liable for a tax-credit shortfall (no recourse modelled); a per-loan recourse option is not yet available.
+
+### Scenarios (finance.review stress tests)
+
+**review.scenarios** and other funding-stress **scenarios** inside **finance.review** remain on **every plan that exposes finance.review**, including **EP**. Do not conflate them with lifecycleChart scenarios, which are Plus/Pro-only and workspace-scoped.
 
 Hypothetical scenario results use basis **reconciled-economic-funding**—the same economic rules as the current plan. They may optionally include **grossSourceCoverage** for entry diagnostics; keep the reconciled scenario result primary. Scenario math uses the same **reconcileFunding**, **sourceSizing**, and **cashFlowTiming** rules as the base review when those blocks are returned. Report scenarios separately from the current plan. Saved-version totals should be interpreted using their captured rows and evaluation status, not blindly trusted cached totals. A not-evaluable version requires correction, not invented figures. finance.review does not save changes or call a lender approval process.
 

@@ -143,6 +143,43 @@ class ReleaseTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             sync.synchronize(self.root)
 
+    def test_compare_semver_orders_numeric_parts(self):
+        self.assertEqual(sync.compare_semver("0.1.12", "0.1.13"), -1)
+        self.assertEqual(sync.compare_semver("0.2.0", "0.1.99"), 1)
+        self.assertEqual(sync.compare_semver("1.0.0", "1.0.0"), 0)
+
+    def test_apply_release_skips_older_or_equal_tags(self):
+        (self.root / "VERSION").write_text("0.1.13\n")
+        self.assertIsNone(sync.apply_release_version("v0.1.8", root=self.root))
+        self.assertEqual((self.root / "VERSION").read_text(), "0.1.13\n")
+
+    def test_apply_release_skips_malformed_tag(self):
+        (self.root / "VERSION").write_text("0.1.13\n")
+        self.assertIsNone(sync.apply_release_version("vnot-semver", root=self.root))
+        self.assertEqual((self.root / "VERSION").read_text(), "0.1.13\n")
+
+    def test_apply_release_updates_on_newer_tag(self):
+        (self.root / "VERSION").write_text("0.1.12\n")
+        readme = (
+            sync.LATEST_DOWNLOAD
+            + ") · [Release notes]("
+            + sync.LATEST_RELEASE
+            + ")"
+        )
+        (self.root / "README.md").write_text(readme)
+        landing = (
+            "TAKEAGENT SKILL · v0.1.12 "
+            + sync.LATEST_DOWNLOAD
+            + " "
+            + sync.LATEST_RELEASE
+            + " "
+            + sync.LATEST_DOWNLOAD
+        )
+        (self.root / "docs/index.html").write_text(landing, encoding="utf-8")
+        self.assertEqual(sync.apply_release_version("v0.1.13", root=self.root), "0.1.13")
+        self.assertEqual((self.root / "VERSION").read_text(), "0.1.13\n")
+        self.assertIn("TAKEAGENT SKILL · v0.1.13", (self.root / "docs/index.html").read_text())
+
     def assets(self):
         import hashlib
         built, downloaded = self.root / "built", self.root / "downloaded"

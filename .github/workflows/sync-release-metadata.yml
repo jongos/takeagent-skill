@@ -6,6 +6,7 @@ permissions:
   contents: write
 jobs:
   sync:
+    if: ${{ !github.event.release.prerelease }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -18,14 +19,7 @@ jobs:
       - name: Align VERSION and README with published tag
         env:
           RELEASE_TAG: ${{ github.event.release.tag_name }}
-        run: |
-          version="${RELEASE_TAG#v}"
-          if ! [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-            echo "Unexpected release tag: $RELEASE_TAG" >&2
-            exit 1
-          fi
-          printf '%s\n' "$version" > VERSION
-          python3 scripts/sync_version.py --check || python3 scripts/sync_version.py
+        run: python3 scripts/sync_version.py --apply-release "$RELEASE_TAG"
       - name: Commit and push when metadata changed
         env:
           RELEASE_TAG: ${{ github.event.release.tag_name }}

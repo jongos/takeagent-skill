@@ -17,6 +17,51 @@ def version(root=ROOT):
         raise ValueError("VERSION must be a numeric major.minor.patch")
     return value
 
+def semver_tuple(value):
+    match = re.fullmatch(r"(\d+)\.(\d+)\.(\d+)", value.strip())
+    if not match:
+        raise ValueError("Version must be major.minor.patch")
+    return tuple(int(part) for part in match.groups())
+
+def compare_semver(left, right):
+    l_tuple, r_tuple = semver_tuple(left), semver_tuple(right)
+    if l_tuple < r_tuple:
+        return -1
+    if l_tuple > r_tuple:
+        return 1
+    return 0
+
+def is_strictly_newer(candidate, current):
+    return compare_semver(candidate, current) > 0
+
+def normalize_release_tag(tag):
+    value = tag.strip()
+    if value.startswith("v"):
+        value = value[1:]
+    semver_tuple(value)
+    return value
+
+def apply_release_version(tag, root=ROOT, check_only=False):
+    root = Path(root)
+    try:
+        candidate = normalize_release_tag(tag)
+    except ValueError:
+        print(f"Skipping release metadata sync: release tag {tag!r} is not semver major.minor.patch.")
+        return None
+    current = version(root)
+    if not is_strictly_newer(candidate, current):
+        print(
+            f"Release {tag} ({candidate}) is not newer than VERSION {current}; "
+            "skipping metadata sync."
+        )
+        return None
+    if check_only:
+        return candidate
+    path = root / "VERSION"
+    path.write_text(candidate + "\n", encoding="utf-8", newline="\n")
+    synchronize(root)
+    return candidate
+
 def landing_download_links(html):
     issues = []
     if html.count(LATEST_DOWNLOAD) != 2:
@@ -93,6 +138,18 @@ def synchronize(root=ROOT, check=False):
     return tag
 
 if __name__ == "__main__":
-    args = argparse.ArgumentParser()
-    args.add_argument("--check", action="store_true")
-    print(synchronize(check=args.parse_args().check))
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--check", action="store_true")
+    parser.add_argument(
+        "--apply-release",
+        metavar="TAG",
+        help="Write VERSION only when TAG is strictly newer than the current file",
+    )
+    options = parser.parse_args()
+    if options.apply_release:
+        result = apply_release_version(options.apply_release)
+        if result is None:
+            raise SystemExit(0)
+        print("v" + result)
+    else:
+        print(synchronize(check=options.check))

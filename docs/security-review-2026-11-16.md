@@ -1,6 +1,6 @@
 # Skill Review and Hardening — November 16, 2026
 
-**Historical snapshot.** Test counts, ZIP hashes, landing-page version pins and CI run links in this document describe the v0.1.2–v0.1.3 hardening pass. Current packaging checks include gitleaks secret scanning in `.github/workflows/validate.yml` and the full regression suite under `tests/` (24 cases on Linux CI). See `README.md` for up-to-date validation commands.
+**Historical snapshot.** Test counts, ZIP hashes, landing-page version pins and CI run links in this document describe the v0.1.2–v0.1.3 hardening pass and may be stale. Current packaging checks include gitleaks secret scanning in `.github/workflows/validate.yml` and the full regression suite under `tests/`. See `README.md` for up-to-date validation commands (`python3 -m unittest discover -s tests -v`).
 
 Scope: public skill instructions, installation guidance, release packaging and the static download page. No private backend or production authentication changes. This is a source review with packaging regression tests, not an independent penetration test or proof of behavior in every AI host.
 
