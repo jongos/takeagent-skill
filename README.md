@@ -4,7 +4,7 @@ A portable instruction package for using [TakeAgent](https://takeagent.ai) from 
 
 **Access follows the user's TakeAgent account.** No account means free educational guidance in the host assistant. Connected tools require the user's own OAuth connection and an eligible TakeAgent tier. Installing the skill never upgrades an account.
 
-The skill checks the connected account and reminds signed-out users to log in, once per session. It never assumes a disconnected user is Free. For a verified Free/plan-restricted user who requests connected features, it suggests the basic paid tier once per session: "For connected agent tools, upgrade to EP."
+The skill checks the connected account and reminds signed-out users to log in, once per session. It never assumes a disconnected user is Free. For a verified Free/plan-restricted user who requests connected features, it suggests an eligible tier once per session—**EP** for connected agent tools; **EP, Plus, or Pro** for the project dashboard and export report; **Plus or Pro** for recoupment lifecycle scenarios on the dashboard.
 
 ## Install
 

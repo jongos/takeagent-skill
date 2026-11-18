@@ -1,5 +1,5 @@
 # takeagent-skill v0.1.12
 
-**Unpublished.** Source and `VERSION` are at 0.1.12; the installable GitHub release asset is not published yet. Until publication, download links use [releases/latest](https://github.com/jongos/takeagent-skill/releases/latest) (currently v0.1.11).
+**Unpublished.** Source and `VERSION` are at 0.1.12; the installable GitHub release asset is not published yet. Until publication, download links use [releases/latest](https://github.com/jongos/takeagent-skill/releases/latest) (latest **published** release is v0.1.8).
 
 Documents live **finance.review** behavior on TakeAgent (host reference commit 7a7f8ee): **cashFlowTiming** with three proceeds measures and dated **shortfallFindings**, optional debt and interest-reserve fields, scenario timing shocks with **shockApplication**, completion-bond allowances as uses only, and provisional native cost-export profiles with **taxonomyCrossWalk**. Adds acceptance cases for cash-vs-funding separation, debt inputs, shocks, bond timing, and export reconciliation. No TakeAgent service code is included in this repository.
