@@ -8,7 +8,7 @@ The skill checks the connected account and reminds signed-out users to log in, o
 
 ## Install
 
-**[Download takeagent-skill.zip](https://github.com/jongos/takeagent-skill/releases/download/v0.1.12/takeagent-skill.zip)** · [Release notes and checksum](https://github.com/jongos/takeagent-skill/releases/tag/v0.1.12) · **[Visit the landing page](https://jongos.github.io/takeagent-skill/)**
+**[Download takeagent-skill.zip](https://github.com/jongos/takeagent-skill/releases/latest/download/takeagent-skill.zip)** · [Release notes and checksum](https://github.com/jongos/takeagent-skill/releases/latest) · **[Visit the landing page](https://jongos.github.io/takeagent-skill/)**
 
 Upload the ZIP where skills are supported, or use the folder at skills/takeagent-skill. See [platform setup](skills/takeagent-skill/references/setup.md) for Claude, ChatGPT, Gemini and Grok.
 
@@ -49,7 +49,7 @@ Produces dist/takeagent-skill.zip and its SHA-256 receipt from one bounded, vali
 
 The supplementary skill-creator validator mentioned in historical diary entries was a maintainer check, not a hidden build requirement. The reproducible public validation commands are listed above.
 
-Change VERSION, then run python scripts/sync_version.py to update README links and the landing-page version badge. The landing page always downloads from GitHub’s latest release URL; only the badge tracks VERSION until the next Pages deploy. CI rejects version drift. On release publication, CI rebuilds the tagged source and compares the downloaded ZIP and checksum byte-for-byte; a follow-up workflow syncs VERSION on default branch when needed.
+Change VERSION, then run python scripts/sync_version.py to update the landing-page version badge. README install links and the landing page always download from GitHub’s latest published release URL until a matching tag is published; only the badge tracks VERSION ahead of publication. CI rejects version drift. On release publication, CI rebuilds the tagged source and compares the downloaded ZIP and checksum byte-for-byte; a follow-up workflow syncs VERSION on default branch when needed.
 
 The skill keeps research provenance private and follows TakeAgent's concise, answer-first editorial standard. Conditions appear only where they change the answer or next step. CI scans Git history and the expanded package for secrets; only the allowlisted instruction files enter the ZIP. TakeAgent service access remains governed by account permissions and the TakeAgent Terms of Service.
 
