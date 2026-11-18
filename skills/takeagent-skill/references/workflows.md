@@ -18,8 +18,8 @@ Use runtime discovery as the contract. Optional inputs or newer response fields 
 | Import CSV/TSV/XLSX, MMB, Saturation or supported text PDF | Workspace import preview; map topsheet **taxonomyId**, reconcile control totals, then apply/save |
 | Plan Builder and revisions | Workspace review/apply flow; don't overwrite unsaved work |
 | Investors, risks and funding conditions | Read/review project fields; edit through Workspace |
-| Project dashboard and export report | Workspace dashboard (EP, Plus, Pro); not Free or Agent Only without dashboard access |
-| Recoupment lifecycle and lifecycleChart scenario planner | Workspace dashboard (Plus, Pro only); absent from finance.review on EP and lower |
+| Project dashboard and export report | Workspace dashboard (EP, Plus, Pro); not on Free or any Agent plan (Agent EP, Agent Plus, Agent Pro) |
+| Recoupment lifecycle and lifecycleChart scenario planner | Workspace dashboard (Plus, Pro only); absent from finance.review on Free, EP, and all Agent plans |
 | Reports, project exports and assistance briefs | Workspace download controls on eligible tiers |
 | Hosted assistant and project context | Workspace assistant, honoring its explicit sharing/saving settings |
 | Incentive or underwriting preparation | Available workspace preparation; no submission or approval |
@@ -160,11 +160,11 @@ Name the finding, cite refs when present, and give one practical next edit.
 
 ### Project dashboard, export report, and plan tiers
 
-The workspace **project dashboard** and downloadable **export report** are available on **EP, Plus, and Pro**. They are not available on **Free** or on **Agent Only** connections that lack saved-project dashboard access. When a user on a lower tier asks for those surfaces, explain the tier requirement and link to membership—do not imply the assistant can render a dashboard view without the website.
+The workspace **project dashboard** and downloadable **export report** are available on **EP, Plus, and Pro**. They are not on **Free** or any **Agent** plan (Agent EP, Agent Plus, Agent Pro). When a user on a lower tier asks for those surfaces, explain the tier requirement and link to membership—do not imply the assistant can render a dashboard view without the website.
 
 ### Recoupment lifecycle (lifecycleChart)
 
-**lifecycleChart** and the recoupment lifecycle **scenario planner** are **Plus and Pro** features in the workspace. They do not appear in **finance.review** output on **EP** or lower tiers—do not invent lifecycle blocks when the payload omits them. For eligible accounts, summarize the chart in producer terms and offer the dashboard when browser assistance is appropriate.
+**lifecycleChart** and the recoupment lifecycle **scenario planner** are **Plus and Pro** features in the workspace. They do not appear in **finance.review** on **Free**, **EP**, or any **Agent** plan—do not invent lifecycle blocks when the payload omits them. For eligible accounts, summarize the chart in producer terms and offer the dashboard when browser assistance is appropriate.
 
 Built-in lifecycle **scenarios** (never call them forecasts) typically include:
 
@@ -173,7 +173,13 @@ Built-in lifecycle **scenarios** (never call them forecasts) typically include:
 - Tax-credit collection **under expected** qualification.
 - A **custom** scenario the producer defines.
 
-Recoupment cash-flow lines distinguish **owed**, **collected**, and **distributed** amounts. **Revenue** in the chart is labeled as **receipts to the collection account**—not gross invoicing and not distributor “off-the-tops,” which the service does not model. The default tax-credit lender posture in these scenarios is **non-recourse** unless the user entered different terms—report what their rows say.
+For each **lifecycleChart.scenarios[]** entry, map producer-facing lines to JSON as follows:
+
+- **Owed** — **scenarios[].tiers[].contractedOwedMinor** (per waterfall tier).
+- **Collected** — **scenarios[].totalIllustrativeRevenueMinor** (illustrative receipts to the collection account under that scenario—not collected cash).
+- **Distributed** — **scenarios[].tiers[].allocatedMinor** (paid toward each tier in the scenario).
+
+Scenario receipts are **after exhibitor and distributor shares**. Off-the-top costs—sales-agent commission and expenses, collection-account fees, and residuals—are **not modelled yet**, so recoupment can read early. The service does **not** hold the producer liable for a tax-credit shortfall (no recourse modelled); a per-loan recourse option is not yet available.
 
 ### Scenarios (finance.review stress tests)
 

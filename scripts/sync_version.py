@@ -43,7 +43,11 @@ def normalize_release_tag(tag):
 
 def apply_release_version(tag, root=ROOT, check_only=False):
     root = Path(root)
-    candidate = normalize_release_tag(tag)
+    try:
+        candidate = normalize_release_tag(tag)
+    except ValueError:
+        print(f"Skipping release metadata sync: release tag {tag!r} is not semver major.minor.patch.")
+        return None
     current = version(root)
     if not is_strictly_newer(candidate, current):
         print(

@@ -153,6 +153,11 @@ class ReleaseTests(unittest.TestCase):
         self.assertIsNone(sync.apply_release_version("v0.1.8", root=self.root))
         self.assertEqual((self.root / "VERSION").read_text(), "0.1.13\n")
 
+    def test_apply_release_skips_malformed_tag(self):
+        (self.root / "VERSION").write_text("0.1.13\n")
+        self.assertIsNone(sync.apply_release_version("vnot-semver", root=self.root))
+        self.assertEqual((self.root / "VERSION").read_text(), "0.1.13\n")
+
     def test_apply_release_updates_on_newer_tag(self):
         (self.root / "VERSION").write_text("0.1.12\n")
         readme = (
