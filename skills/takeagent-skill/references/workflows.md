@@ -130,7 +130,7 @@ When **budgetTaxonomy** is returned, use it to summarize how the budget splits a
 
 **MMB** and **Saturation** imports map imported rows to **taxonomyId** when totals reconcile. When an import refuses unreconciled totals, list the **unmatched** rows the service returns and help the producer retag lines, fix control totals, or reconcile before re-importing—do not silently drop unmatched rows.
 
-When **allowance-category-unmapped** appears in findings, a required allowance (contingency, bond, insurance, E&O, or similar) has no mapped taxonomy lines and no selected budgetAssumptions lines. Fix by assigning **taxonomyId** on the right budget rows and/or selecting those line IDs in budgetAssumptions; explain which bucket is missing without inventing amounts.
+When **allowance-category-unmapped** appears in findings, an allowance the user entered could not be mapped to a topsheet category: it has no mapped taxonomy lines and no selected **budgetAssumptions** lines. Examples include contingency, insurance, E&O, or an optional completion bond when the user budgeted one. Fix by assigning **taxonomyId** on the right budget rows and/or selecting those line IDs in **budgetAssumptions**; explain which entered allowance bucket could not be mapped without inventing amounts. Never imply a completion bond is mandatory or “missing” when the user did not enter one.
 
 ### Double-count findings
 
@@ -154,7 +154,7 @@ Beyond double-count codes, **findings[]** may include advisory items that flag d
 | `presale-entity-territory` | Presale or MG rows need entity, territory, or split clarity. | Enter territory splits, buyer entity, and which rows carry committed vs estimated status. |
 | `estimate-as-contracted` | A sales estimate or territory is treated like contracted capacity without matching evidence or status. | Align source **status**, evidence, and territory **take** with what is actually signed or still estimated. |
 | `Section-181-assumption` | Section 181 or similar incentive timing/qualification rests on stated assumptions. | Confirm spend dates, qualifying categories, and that the user intended the modeled assumption—do not assert eligibility. |
-| `allowance-category-unmapped` | A required topsheet allowance has no taxonomy-mapped or selected budget lines. | Tag budget lines with the right **taxonomyId** and/or select them in **budgetAssumptions**. |
+| `allowance-category-unmapped` | An allowance the user entered could not be mapped to a topsheet category (contingency, insurance, E&O, or an optional completion bond when budgeted). | Tag budget lines with the right **taxonomyId** and/or select them in **budgetAssumptions**. |
 
 Name the finding, cite refs when present, and give one practical next edit.
 
