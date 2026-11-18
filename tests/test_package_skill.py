@@ -21,6 +21,7 @@ class PackageTests(unittest.TestCase):
         (self.skill / "SKILL.md").write_text(self.main, encoding="utf-8")
         (self.skill / "references/setup.md").write_text("Setup\n", encoding="utf-8")
         (self.skill / "references/workflows.md").write_text("Workflows\n", encoding="utf-8")
+        (self.root / "LICENSE").write_text("MediaHedge License\n", encoding="utf-8")
 
     def test_only_allowlisted_files_are_published(self):
         (self.skill / ".env").write_text("DO_NOT_PACKAGE", encoding="utf-8")
@@ -35,6 +36,8 @@ class PackageTests(unittest.TestCase):
         archive, digest = package.build(self.root)
         first = archive.read_bytes()
         for name in package.FILES:
+            if name == "LICENSE":
+                continue
             path = self.skill / name
             path.write_bytes(path.read_bytes().replace(b"\r\n", b"\n").replace(b"\n", b"\r\n"))
         archive, second = package.build(self.root)

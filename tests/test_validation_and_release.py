@@ -81,7 +81,7 @@ class ReleaseTests(unittest.TestCase):
         )
         (self.root / "README.md").write_text(readme)
         landing = (
-            "OPEN SOURCE · v0.1.2 "
+            "TAKEAGENT SKILL · v0.1.2 "
             + sync.LATEST_DOWNLOAD
             + " "
             + sync.LATEST_RELEASE
@@ -96,11 +96,11 @@ class ReleaseTests(unittest.TestCase):
         self.assertEqual(sync.synchronize(self.root), "v0.1.3")
         self.assertEqual(sync.synchronize(self.root, check=True), "v0.1.3")
         self.assertIn("/v0.1.3/", (self.root / "README.md").read_text())
-        self.assertIn("OPEN SOURCE · v0.1.3", (self.root / "docs/index.html").read_text())
+        self.assertIn("TAKEAGENT SKILL · v0.1.3", (self.root / "docs/index.html").read_text())
 
     def test_pinned_landing_release_urls_are_rejected(self):
         pinned = (
-            "OPEN SOURCE · v0.1.3 "
+            "TAKEAGENT SKILL · v0.1.3 "
             + self.base
             + "download/v0.1.2/takeagent-skill.zip"
         )
