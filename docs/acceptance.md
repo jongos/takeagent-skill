@@ -47,6 +47,13 @@ Status: public instruction package. No production service changes are included. 
 36. Scenario result with basis reconciled-economic-funding: report scenario on reconciled basis; optional grossSourceCoverage stays secondary.
 37. User assembling a plan with estimates only: practical reconciled readout without lecturing that planned money is uncommitted unless that distinction changes their question.
 38. Worked example in chat: cite cell references or placeholders only; no invented literal dollar amounts unless supplied by the user.
+39. finance.review returns sourceSizing: per-source gross, net collectible and advanceable from user rows; ask for missing advance rates, discounts, routes or low-case estimates instead of inventing figures.
+40. sourceSizing includes exampleDefaultsLabel: state once that labeled example defaults filled blank rates only; describe them as configurable planning assumptions, not lender caps or requirements.
+41. fundingReconciliation includes allowanceUses or topsheetAllowances: explain embedded uses already counted in reconciliation; do not add them again to the economic gap.
+42. budgetTaxonomy or taxonomyId on lines: summarize topsheet buckets; allowance-category-unmapped directs user to tag lines and/or select budgetAssumptions line IDs—never treat unmapped allowance as zero.
+43. MMB or Saturation import with unreconciled total: refuse silently completing import; surface unmatched rows and retag/reconcile guidance.
+44. Advisory findings (incentive-face-or-route, presale entity/territory, estimate-as-contracted, Section 181 assumption): explain issue and one fix; never present as decline or guaranteed ineligibility.
+45. Gap-concentration review trigger: advisory prompt for concentrated gap collateral only; does not decline the plan.
 
 Run OAuth acceptance separately in each named client: consent with intended identity, discovery, account.access, synthetic finance.review, owner isolation, refresh, revoke and denied subsequent call. Record date, client/version and outcomes without tokens or customer content.
 
