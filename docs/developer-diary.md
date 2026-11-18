@@ -123,3 +123,9 @@ Validation: 21 local packaging tests passed with three Windows symlink-privilege
 ## 2026-11-18 — Document finance.review cash timing, debt, shocks and export crosswalk
 
 Synced skill instructions with TakeAgent host main at 7a7f8ee. Documented **cashFlowTiming** (gross, net and production cash, **shortfallFindings**), optional debt and interest-reserve inputs, scenario shocks with **shockApplication**, completion-bond allowances as uses only, and provisional native cost-export profiles with **taxonomyCrossWalk**. Added acceptance cases 46–50. Bumped VERSION to 0.1.12 without publishing a release artifact.
+
+## 2026-11-18 — Document lenderEquityNeeds, deficit wording and optional bonds
+
+Synced skill instructions with TakeAgent host main at 87c247e (lender versus equity needs). Documented **Mezzanine** source type, **linkedEquitySourceId**, **lenderNeedsChecklist**, **equityTerms** / **mezzanineTerms**, **waterfallPlacements**, and **lenderEquityNeeds** interpretation (lender unbundling, bondCoverage only when bonded, illustrative waterfall caveat). Applied owner terminology: budget shortfalls are **deficits** in prose; **gap** reserved for gap-financing collateral. Reinforced completion bonds as optional—no missing-bond prompts. Added acceptance cases 51–56. Bumped VERSION to 0.1.13 without publishing a release artifact.
+
+Validation: `python3 -m pip install -r requirements-build.txt`; `python3 -m unittest discover -s tests -v`; `python3 scripts/sync_version.py --check`; `python3 scripts/package_skill.py` and checksum verify per README.
