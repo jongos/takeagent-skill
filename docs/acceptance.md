@@ -76,6 +76,12 @@ Named draft saves now use scoped consent and concurrency checks. Full direct par
 
 Grok consumer and Gemini consumer connected install paths require actual platform support and acceptance; developer/CLI support is not a substitute.
 
+## Platform Setup Revalidation
+
+Before each public release, and at least quarterly while the skill is maintained, recheck the official links, feature names, setup paths and rollout limitations in [the setup guide](../skills/takeagent-skill/references/setup.md). Recheck affected instructions sooner when a vendor announces a change or a user reports a broken path.
+
+Record the date, platform/client version, official source checked, and observed or unverified status in the release notes or the release review. If a UI path or account-dependent capability could not be verified, retain the availability caveat and do not mark that platform accepted. An accessible documentation URL does not verify the corresponding UI or OAuth flow; use the named-client acceptance checks above for that evidence.
+
 ## Public release
 
 Review the explicit package allowlist and all Git-tracked files. Publish this standalone repository only, never mirror the private application repository or its history. Include the ZIP and checksum as release assets. Do not label unresolved acceptance rows as passed.
