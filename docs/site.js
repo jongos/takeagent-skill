@@ -2,7 +2,7 @@ const platforms = {
 claude: ["CUSTOM SKILL + CONNECTOR", "Add It to Claude.", "Upload the ZIP in Customize → Skills and enable it. For connected tools, add TakeAgent as a remote MCP connector and sign in with your own account."],
 chatgpt: ["INSTRUCTIONS + MCP", "Set It Up in ChatGPT.", "Use the skill facility where available, or add the skill files to your project instructions. For connected tools, add the TakeAgent MCP server where your account or workspace permits custom connections."],
 gemini: ["CLI SKILL · APP GUIDANCE", "Choose Your Gemini Surface.", "Gemini CLI supports Agent Skills and compatible MCP connections. In the Gemini app, use the available custom instruction feature for guidance; a connected TakeAgent install is not yet verified."],
-grok: ["GUIDANCE · DEVELOPER MCP", "Bring the Instructions to Grok.", "Use the skill files as instructions where supported. Developers can integrate remote MCP with per-user TakeAgent OAuth. Native skill installation and connected use in the Grok consumer app remain unverified."]
+grok: ["BOT SKILL + CONNECTOR · GUIDANCE ELSEWHERE", "Choose Your Grok Surface.", "On capable Grok Bot hosts, install the canonical skill folder and add TakeAgent as a remote MCP connector with your own OAuth sign-in, then verify with account.access. On other Grok surfaces, use the skill files as instructions only. Developers can integrate remote MCP per user; this repo is not an OAuth broker. Skill load and account.access succeeded on one Bot host (November 17, 2026); full acceptance is not claimed."]
 };
 const tabs = [...document.querySelectorAll('[role="tab"]')];
 function select(tab) {

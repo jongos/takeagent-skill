@@ -28,11 +28,15 @@ Official docs: https://geminicli.com/docs/cli/skills/ and https://geminicli.com/
 
 ## Grok
 
-Use SKILL.md and the references as conversation/project instructions where file or instruction input is supported. This is guidance mode, not a verified native skill installer.
+Grok Bot hosts that support custom skills and custom remote MCP connectors: install the canonical takeagent-skill folder unchanged, add a custom remote MCP connector at https://takeagent.ai/api/mcp using the host's OAuth connector flow, sign in with your own TakeAgent account, then verify with account.access.
 
-For developers, xAI offers remote MCP tools. A host integration must securely complete TakeAgent OAuth for each user and provide the resulting authorization through its protected token mechanism. This repository does not supply an OAuth broker. API support does not establish support in the Grok consumer app.
+Other Grok surfaces: use SKILL.md and the references as conversation or project instructions where file or instruction input is supported. That supplies guidance only; it does not install the skill package or connect tools.
+
+For developers, xAI offers remote MCP tools. A host integration must securely complete TakeAgent OAuth for each user and provide the resulting authorization through its protected token mechanism. This repository does not supply an OAuth broker.
 
 Official remote MCP documentation: https://docs.x.ai/developers/tools/remote-mcp
+
+These installation steps are not end-to-end acceptance. On one Grok Bot host, skill load and account.access succeeded (recorded November 17, 2026). Sign-in, expiry/reconnect, account-switch, prompt-injection, and once-per-thread checks have not been run.
 
 ## Copilot in Excel
 
