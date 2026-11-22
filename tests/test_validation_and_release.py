@@ -14,6 +14,58 @@ def load_script(name):
 
 sync = load_script("sync_version")
 release = load_script("verify_release")
+policy = load_script("content_policy")
+
+class PublicContentPolicyTests(unittest.TestCase):
+    def test_repository_packaged_files_pass_policy(self):
+        policy.check_repository(Path(__file__).resolve().parents[1])
+
+    def test_private_names_and_contacts_fail_policy(self):
+        temp = tempfile.TemporaryDirectory()
+        self.addCleanup(temp.cleanup)
+        root = Path(temp.name)
+        skill = root / "skills/takeagent-skill/references"
+        skill.mkdir(parents=True)
+        (root / "README.md").write_text("ok\n", encoding="utf-8")
+        (root / "LICENSE").write_text("info@filmhedge.com\n", encoding="utf-8")
+        (skill / "setup.md").write_text("see takeagent-excel repo\n", encoding="utf-8")
+        (root / "skills/takeagent-skill/SKILL.md").write_text("---\nname: takeagent-skill\ndescription: x\n---\n", encoding="utf-8")
+        (root / "skills/takeagent-skill/references/workflows.md").write_text("ok\n", encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "takeagent-excel"):
+            policy.check_repository(root)
+
+    def test_private_host_repo_link_fails_policy(self):
+        temp = tempfile.TemporaryDirectory()
+        self.addCleanup(temp.cleanup)
+        root = Path(temp.name)
+        skill = root / "skills/takeagent-skill"
+        (skill / "references").mkdir(parents=True)
+        for name, body in [
+            ("SKILL.md", "---\nname: takeagent-skill\ndescription: x\n---\n"),
+            ("references/setup.md", "https://github.com/jongos/takeagent/issues/1\n"),
+            ("references/workflows.md", "ok\n"),
+        ]:
+            (skill / name).parent.mkdir(parents=True, exist_ok=True)
+            (skill / name).write_text(body, encoding="utf-8")
+        (root / "README.md").write_text("ok\n", encoding="utf-8")
+        (root / "LICENSE").write_text("info@filmhedge.com\n", encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "private host"):
+            policy.check_repository(root)
+
+    def test_disallowed_email_fails_policy(self):
+        temp = tempfile.TemporaryDirectory()
+        self.addCleanup(temp.cleanup)
+        root = Path(temp.name)
+        skill = root / "skills/takeagent-skill"
+        (skill / "references").mkdir(parents=True)
+        (skill / "SKILL.md").write_text("---\nname: takeagent-skill\ndescription: x\n---\n", encoding="utf-8")
+        (skill / "references/setup.md").write_text("contact ops@evil.example\n", encoding="utf-8")
+        (skill / "references/workflows.md").write_text("ok\n", encoding="utf-8")
+        (root / "README.md").write_text("ok\n", encoding="utf-8")
+        (root / "LICENSE").write_text("info@filmhedge.com\n", encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "ops@evil.example"):
+            policy.check_repository(root)
+
 
 class MetadataAndMarkdownTests(unittest.TestCase):
     setUp = fixtures.PackageTests.setUp

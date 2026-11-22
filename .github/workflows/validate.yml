@@ -7,6 +7,8 @@ on:
     types: [published]
 permissions:
   contents: read
+  id-token: write
+  attestations: write
 jobs:
   package:
     runs-on: ubuntu-latest
@@ -23,11 +25,17 @@ jobs:
         run: |
           python3 -m unittest discover -s tests -v
           python3 scripts/sync_version.py --check
+          python3 scripts/content_policy.py
       - name: Build and verify the skill archive
         run: |
           python3 scripts/package_skill.py
           cd dist
           sha256sum --check takeagent-skill.zip.sha256
+      - name: Attest release archive provenance
+        if: github.event_name == 'release'
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: dist/takeagent-skill.zip
       - name: Scan history and expanded package for secrets
         shell: bash
         run: |
