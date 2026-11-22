@@ -86,7 +86,7 @@ Published v0.1.5 from bfcf3b3. Push CI 43893988586 passed all 24 tests without s
 
 ## 2026-11-17 — Adapt canonical skill for Copilot workbook assistance
 
-Kept one canonical skill and added workbook discovery, minimal clarification, read-only defaults, cell references, hidden-content handling and a clear distinction between local host assistance and authenticated TakeAgent review. Clarified that website edit guidance refers to TakeAgent projects. Added Copilot installation guidance and pending workbook acceptance cases. Excel packaging belongs to takeagent-excel and consumes a pinned revision.
+Kept one canonical skill and added workbook discovery, minimal clarification, read-only defaults, cell references, hidden-content handling and a clear distinction between local host assistance and authenticated TakeAgent review. Clarified that website edit guidance refers to TakeAgent projects. Added Copilot installation guidance and pending workbook acceptance cases. TakeAgent for Excel ships as a separate package download from takeagent.ai, not from this public repository.
 
 Validation: 24 Python tests completed successfully (3 Windows symlink privilege skips); package allowlist/link/archive verification passed; version synchronization check passed; skill-creator quick validation passed. No new release/version, Copilot upload, live model acceptance or MCP compatibility claim.
 
@@ -129,3 +129,7 @@ Synced skill instructions with TakeAgent host main at 7a7f8ee. Documented **cash
 Synced skill instructions with TakeAgent host main at 87c247e (lender versus equity needs). Documented **Mezzanine** source type, **linkedEquitySourceId**, **lenderNeedsChecklist**, **equityTerms** / **mezzanineTerms**, **waterfallPlacements**, and **lenderEquityNeeds** interpretation (lender unbundling, bondCoverage only when bonded, illustrative waterfall caveat). Applied owner terminology: budget shortfalls are **deficits** in prose; **gap** reserved for gap-financing collateral. Reinforced completion bonds as optional—no missing-bond prompts. Added acceptance cases 51–56. Bumped VERSION to 0.1.13 without publishing a release artifact.
 
 Validation: `python3 -m pip install -r requirements-build.txt`; `python3 -m unittest discover -s tests -v`; `python3 scripts/sync_version.py --check`; `python3 scripts/package_skill.py` and checksum verify per README.
+
+## 2026-11-22 — v0.1.14 product sync, public-content denylist, release attestation
+
+Cut v0.1.14 for **finance.review** responseVersion 2, archived **projects.list**, anti-phishing guidance, and prose money formatting. Removed private Excel repository names from packaged setup text and the diary; **TakeAgent for Excel** is described only as a takeagent.ai package download. Added `scripts/content_policy.py` with regression tests for private repo names, internal terms, disallowed emails and links to the private host repository across tracked text. Release CI attests `dist/takeagent-skill.zip` with GitHub build provenance. Added acceptance cases 57–59.

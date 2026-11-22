@@ -1,4 +1,5 @@
 import importlib.util
+import subprocess
 import tempfile
 import unittest
 from pathlib import Path
@@ -14,6 +15,85 @@ def load_script(name):
 
 sync = load_script("sync_version")
 release = load_script("verify_release")
+policy = load_script("content_policy")
+
+class PublicContentPolicyTests(unittest.TestCase):
+    def init_git_fixture(self, files):
+        temp = tempfile.TemporaryDirectory()
+        self.addCleanup(temp.cleanup)
+        root = Path(temp.name)
+        subprocess.run(["git", "init", "-q"], cwd=root, check=True)
+        subprocess.run(
+            ["git", "config", "user.email", "info@filmhedge.com"],
+            cwd=root,
+            check=True,
+        )
+        subprocess.run(["git", "config", "user.name", "policy-test"], cwd=root, check=True)
+        skill = root / "skills/takeagent-skill/references"
+        skill.mkdir(parents=True, exist_ok=True)
+        baseline = {
+            "README.md": "ok\n",
+            "LICENSE": "MediaHedge, Inc., info@filmhedge.com.\n",
+            "skills/takeagent-skill/SKILL.md": "---\nname: takeagent-skill\ndescription: x\n---\n",
+            "skills/takeagent-skill/references/setup.md": "ok\n",
+            "skills/takeagent-skill/references/workflows.md": "ok\n",
+        }
+        baseline.update(files)
+        for relative, body in baseline.items():
+            path = root / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(body, encoding="utf-8")
+        subprocess.run(["git", "add", "-A"], cwd=root, check=True)
+        return root
+
+    def test_repository_tracked_text_passes_policy(self):
+        policy.check_repository(Path(__file__).resolve().parents[1])
+
+    def test_private_repo_name_case_insensitive(self):
+        root = self.init_git_fixture(
+            {"docs/note.md": "Packaging uses TakeAgent-Excel internally.\n"}
+        )
+        with self.assertRaisesRegex(ValueError, "takeagent-excel"):
+            policy.check_repository(root)
+
+    def test_mh_brain_and_mediahedge_brain_fail(self):
+        for body in ("use MH Brain connector\n", "see MediaHedge Brain data\n"):
+            with self.subTest(body=body):
+                root = self.init_git_fixture({"docs/internal.md": body})
+                with self.assertRaisesRegex(ValueError, "brain"):
+                    policy.check_repository(root)
+
+    def test_private_host_repo_without_scheme_fails(self):
+        root = self.init_git_fixture(
+            {"docs/host-release-status.md": "see github.com/jongos/takeagent/issues/1\n"}
+        )
+        with self.assertRaisesRegex(ValueError, "private host"):
+            policy.check_repository(root)
+
+    def test_public_takeagent_skill_repo_link_allowed(self):
+        root = self.init_git_fixture(
+            {
+                "README.md": "https://github.com/jongos/takeagent-skill/releases/latest\n",
+            }
+        )
+        policy.check_repository(root)
+
+    def test_disallowed_email_and_obfuscated_form_fail(self):
+        for body, pattern in (
+            ("contact ops@evil.example\n", "ops@evil.example"),
+            ("reach bob [at] evil [dot] com\n", "obfuscated email"),
+        ):
+            with self.subTest(body=body):
+                root = self.init_git_fixture({"docs/contact.md": body})
+                with self.assertRaisesRegex(ValueError, pattern):
+                    policy.check_repository(root)
+
+    def test_allowed_license_email_passes(self):
+        root = self.init_git_fixture(
+            {"LICENSE": "Questions: MediaHedge, Inc., info@filmhedge.com.\n"}
+        )
+        policy.check_repository(root)
+
 
 class MetadataAndMarkdownTests(unittest.TestCase):
     setUp = fixtures.PackageTests.setUp
