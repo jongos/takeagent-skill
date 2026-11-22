@@ -52,6 +52,7 @@ jobs:
           python3 scripts/verify_release.py --tag "$RELEASE_TAG"
   attest:
     if: github.event_name == 'release'
+    needs: package
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:

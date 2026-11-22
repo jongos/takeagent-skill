@@ -24,7 +24,7 @@ class PublicContentPolicyTests(unittest.TestCase):
         root = Path(temp.name)
         subprocess.run(["git", "init", "-q"], cwd=root, check=True)
         subprocess.run(
-            ["git", "config", "user.email", "info@filmhedge.com"],
+            ["git", "config", "user.email", policy.ALLOWED_EMAIL],
             cwd=root,
             check=True,
         )
@@ -33,7 +33,7 @@ class PublicContentPolicyTests(unittest.TestCase):
         skill.mkdir(parents=True, exist_ok=True)
         baseline = {
             "README.md": "ok\n",
-            "LICENSE": "MediaHedge, Inc., info@filmhedge.com.\n",
+            "LICENSE": f"MediaHedge, Inc., {policy.ALLOWED_EMAIL}.\n",
             "skills/takeagent-skill/SKILL.md": "---\nname: takeagent-skill\ndescription: x\n---\n",
             "skills/takeagent-skill/references/setup.md": "ok\n",
             "skills/takeagent-skill/references/workflows.md": "ok\n",
@@ -78,10 +78,17 @@ class PublicContentPolicyTests(unittest.TestCase):
         )
         policy.check_repository(root)
 
+    @staticmethod
+    def synthetic_disallowed_email():
+        local, domain, tld = "ops", "evil", "example"
+        return f"{local}@{domain}.{tld}"
+
     def test_disallowed_email_and_obfuscated_form_fail(self):
+        disallowed = self.synthetic_disallowed_email()
         for body, pattern in (
-            ("contact ops@evil.example\n", "ops@evil.example"),
+            (f"contact {disallowed}\n", disallowed),
             ("reach bob [at] evil [dot] com\n", "obfuscated email"),
+            ("reach bob (at) evil (dot) com\n", "obfuscated email"),
         ):
             with self.subTest(body=body):
                 root = self.init_git_fixture({"docs/contact.md": body})
@@ -89,9 +96,8 @@ class PublicContentPolicyTests(unittest.TestCase):
                     policy.check_repository(root)
 
     def test_allowed_license_email_passes(self):
-        root = self.init_git_fixture(
-            {"LICENSE": "Questions: MediaHedge, Inc., info@filmhedge.com.\n"}
-        )
+        allowed = f"Questions: MediaHedge, Inc., {policy.ALLOWED_EMAIL}.\n"
+        root = self.init_git_fixture({"LICENSE": allowed})
         policy.check_repository(root)
 
 

@@ -39,8 +39,12 @@ HOST_REPO = re.compile(
 EMAIL_RE = re.compile(
     r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b"
 )
-OBFUSCATED_EMAIL = re.compile(
+OBFUSCATED_EMAIL_BRACKET = re.compile(
     r"\b[\w.]+\s*\[(?:at)\]\s*[\w.]+\s*\[(?:dot)\]\s*[\w.]+\b",
+    re.IGNORECASE,
+)
+OBFUSCATED_EMAIL_PAREN = re.compile(
+    r"\b[\w.]+\s*\((?:at)\)\s*[\w.]+\s*\((?:dot)\)\s*[\w.]+\b",
     re.IGNORECASE,
 )
 
@@ -83,7 +87,7 @@ def violations_in_text(text, label):
     for email in EMAIL_RE.findall(text):
         if email.casefold() != ALLOWED_EMAIL.casefold():
             issues.append(f"{label}: disallowed email {email!r}")
-    if OBFUSCATED_EMAIL.search(text):
+    if OBFUSCATED_EMAIL_BRACKET.search(text) or OBFUSCATED_EMAIL_PAREN.search(text):
         issues.append(f"{label}: disallowed obfuscated email")
     return issues
 
