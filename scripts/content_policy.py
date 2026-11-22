@@ -1,65 +1,102 @@
-"""Fail CI when packaged or public instruction files leak private names or contacts."""
+"""Fail CI when tracked text leaks private names, host-repo links, or contacts."""
 from pathlib import Path
 import re
+import subprocess
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 
-PRIVATE_REPO_NAMES = (
+ALLOWED_EMAIL = "info@filmhedge.com"
+EXCEL_INTEGRATION_URL = "https://takeagent.ai/integrations/takeagent-excel"
+ALLOWED_HOST_REPO_SUFFIXES = (
+    "-skill",
+    "-greenslate",
+    "-saturation",
+    "-smartaccounting",
+    "-wrapbook",
+)
+PRIVATE_REPO_TERMS = (
     "takeagent-excel",
     "takeagent-website",
     "takeagent-smartaccounting-old",
 )
 INTERNAL_TERMS = (
-    "MH Brain",
-    "MH Credit",
-    "Black-Top",
-    "Neon",
-    "DATABASE_URL",
+    "mh brain",
+    "mediahedge brain",
+    "mh credit",
+    "black-top",
+    "neon",
+    "database_url",
 )
-ALLOWED_EMAIL = "info@filmhedge.com"
-EXCEL_INTEGRATION_URL = "https://takeagent.ai/integrations/takeagent-excel"
-PRIVATE_HOST_REPO = re.compile(
-    r"https?://github\.com/jongos/takeagent(?![-\w])"
+TEXT_EXTENSIONS = {".md", ".txt", ".html", ".js", ".css", ".yml", ".yaml", ".py"}
+TEXT_NAMES = {"LICENSE", "VERSION"}
+POLICY_EXCLUDE_PREFIXES = ("tests/",)
+POLICY_EXCLUDE_FILES = {"scripts/content_policy.py"}
+HOST_REPO = re.compile(
+    r"(?:https?://)?github\.com/jongos/takeagent(?![-\w])",
+    re.IGNORECASE,
 )
-EMAIL_RE = re.compile(r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b")
+EMAIL_RE = re.compile(
+    r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b"
+)
+OBFUSCATED_EMAIL = re.compile(
+    r"\b[\w.]+\s*\[(?:at)\]\s*[\w.]+\s*\[(?:dot)\]\s*[\w.]+\b",
+    re.IGNORECASE,
+)
 
 
 def scrub_allowlisted_phrases(text):
-    """Remove sanctioned public URLs before scanning for private repository names."""
     return text.replace(EXCEL_INTEGRATION_URL, "")
 
-PACKAGED_SKILL_FILES = (
-    "skills/takeagent-skill/SKILL.md",
-    "skills/takeagent-skill/references/setup.md",
-    "skills/takeagent-skill/references/workflows.md",
-)
-PUBLIC_SCAN_FILES = PACKAGED_SKILL_FILES + ("README.md", "LICENSE")
+
+def iter_tracked_text_files(root):
+    listing = subprocess.run(
+        ["git", "-C", str(root), "ls-files"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if listing.returncode != 0:
+        raise ValueError("git ls-files failed; run content policy from a git checkout")
+    for relative in listing.stdout.splitlines():
+        if not relative:
+            continue
+        if relative in POLICY_EXCLUDE_FILES or relative.startswith(POLICY_EXCLUDE_PREFIXES):
+            continue
+        path = Path(relative)
+        if path.suffix.lower() in TEXT_EXTENSIONS or path.name in TEXT_NAMES:
+            yield root / relative
 
 
 def violations_in_text(text, label):
     issues = []
-    scrubbed = scrub_allowlisted_phrases(text)
-    for term in PRIVATE_REPO_NAMES + INTERNAL_TERMS:
-        if term in scrubbed:
+    lower = scrub_allowlisted_phrases(text).casefold()
+    for term in PRIVATE_REPO_TERMS + INTERNAL_TERMS:
+        if term.casefold() in lower:
             issues.append(f"{label}: disallowed term {term!r}")
-    if PRIVATE_HOST_REPO.search(text):
+    for match in HOST_REPO.finditer(text):
+        tail = text[match.end() : match.end() + 32].casefold()
+        if any(tail.startswith(suffix) for suffix in ALLOWED_HOST_REPO_SUFFIXES):
+            continue
         issues.append(f"{label}: private host repository link")
+        break
     for email in EMAIL_RE.findall(text):
-        if email.lower() != ALLOWED_EMAIL.lower():
+        if email.casefold() != ALLOWED_EMAIL.casefold():
             issues.append(f"{label}: disallowed email {email!r}")
+    if OBFUSCATED_EMAIL.search(text):
+        issues.append(f"{label}: disallowed obfuscated email")
     return issues
 
 
 def collect_violations(root=ROOT):
     issues = []
-    for relative in PUBLIC_SCAN_FILES:
-        path = Path(root) / relative
+    for path in iter_tracked_text_files(root):
         if not path.is_file():
-            issues.append(f"missing scan path: {relative}")
+            issues.append(f"missing scan path: {path.relative_to(root).as_posix()}")
             continue
-        text = path.read_text(encoding="utf-8")
-        issues.extend(violations_in_text(text, relative))
+        text = path.read_text(encoding="utf-8", errors="replace")
+        label = path.relative_to(root).as_posix()
+        issues.extend(violations_in_text(text, label))
     return issues
 
 

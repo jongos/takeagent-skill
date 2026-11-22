@@ -7,8 +7,6 @@ on:
     types: [published]
 permissions:
   contents: read
-  id-token: write
-  attestations: write
 jobs:
   package:
     runs-on: ubuntu-latest
@@ -31,11 +29,6 @@ jobs:
           python3 scripts/package_skill.py
           cd dist
           sha256sum --check takeagent-skill.zip.sha256
-      - name: Attest release archive provenance
-        if: github.event_name == 'release'
-        uses: actions/attest-build-provenance@v2
-        with:
-          subject-path: dist/takeagent-skill.zip
       - name: Scan history and expanded package for secrets
         shell: bash
         run: |
@@ -57,3 +50,24 @@ jobs:
         run: |
           gh release download "$RELEASE_TAG" --dir downloaded -p 'takeagent-skill.zip*'
           python3 scripts/verify_release.py --tag "$RELEASE_TAG"
+  attest:
+    if: github.event_name == 'release'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.release.tag_name }}
+      - name: Install pinned build dependencies
+        run: python3 -m pip install -r requirements-build.txt
+      - name: Build release archive for attestation
+        run: python3 scripts/package_skill.py
+      - name: Attest release archive provenance
+        uses: actions/attest-build-provenance@e8998f949152b193b063cb0ec769d69d929409be
+        with:
+          subject-path: dist/takeagent-skill.zip
